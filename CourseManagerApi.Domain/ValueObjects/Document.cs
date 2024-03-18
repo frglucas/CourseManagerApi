@@ -9,7 +9,7 @@ public class Document : ValueObject
 {
     public Document(string number, EDocumentType documentType)
     {
-        Number = number;
+        Number = number.Trim();
         DocumentType = documentType;
 
         VerifyNotifications();
