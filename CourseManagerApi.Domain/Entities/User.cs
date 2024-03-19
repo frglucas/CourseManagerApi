@@ -11,7 +11,12 @@ public class User : Entity
     public Gender Gender { get; private set; }
     public Address Address { get; private set; }
     public DateTime BirthDate { get; private set; }
-    public string Occupation { get; private set; }
+    public Occupation Occupation { get; private set; }
     public bool IsSmoker { get; private set; }
     public string Observation { get; private set; }
+
+    protected override void VerifyNotifications()
+    {
+        throw new NotImplementedException();
+    }
 }
