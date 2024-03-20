@@ -14,6 +14,7 @@ public class User : Entity
     public Occupation Occupation { get; private set; }
     public bool IsSmoker { get; private set; }
     public string Observation { get; private set; }
+    public Tenant Tenant { get; private set; }
 
     protected override void VerifyNotifications()
     {
