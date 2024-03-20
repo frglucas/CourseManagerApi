@@ -48,7 +48,7 @@ public class Address : ValueObject
                     .IsGreaterOrEqualsThan(State.Length, 3, "Address.State", "Estado deve conter 3 ou mais caracteres")
                     .IsGreaterOrEqualsThan(Country.Length, 3, "Address.Country", "País deve conter 3 ou mais caracteres")
                     .IsLowerOrEqualsThan(Street.Length, 128, "Address.Street", "Rua deve conter 128 ou menos caracteres")
-                    .IsLowerOrEqualsThan(AddressNumber.Length, 6, "Address.AddressNumber", "Número do endereço deve conter 128 ou menos caracteres")
+                    .IsLowerOrEqualsThan(AddressNumber.Length, 6, "Address.AddressNumber", "Número do endereço deve conter 6 ou menos caracteres")
                     .IsLowerOrEqualsThan(Neighborhood.Length, 32, "Address.Neighborhood", "Bairro deve conter 32 ou menos caracteres")
                     .IsLowerOrEqualsThan(City.Length, 32, "Address.City", "Cidade deve conter 32 ou menos caracteres")
                     .IsLowerOrEqualsThan(State.Length, 32, "Address.State", "Estado deve conter 32 ou menos caracteres")
