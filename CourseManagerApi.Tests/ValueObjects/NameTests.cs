@@ -13,7 +13,7 @@ public class NameTests
     [DataRow("")]
     [DataRow("Ab")]
     [DataRow("128LenghtTest", true)]
-    public void ShouldReturnErrorWhenFirstNameValueIsNullOrEmpty(string firstName, bool useStringGreater128 = false)
+    public void ShouldReturnErrorWhenFirstNameValueIsInvalid(string firstName, bool useStringGreater128 = false)
     {
         var value = useStringGreater128 ? stringGreater128 : firstName;
         
@@ -29,7 +29,7 @@ public class NameTests
     [DataRow("")]
     [DataRow("Ab")]
     [DataRow("128LenghtTest", true)]
-    public void ShouldReturnErrorWhenLastNameValueIsNullOrEmpty(string lastName, bool useStringGreater128 = false)
+    public void ShouldReturnErrorWhenLastNameValueIsInvalid(string lastName, bool useStringGreater128 = false)
     {
         var value = useStringGreater128 ? stringGreater128 : lastName;
         
@@ -42,10 +42,9 @@ public class NameTests
     [TestMethod]
     [TestCategory("ValueObject - Name")]
     [DataRow(null)]
-    [DataRow("")]
     [DataRow("Ab")]
     [DataRow("128LenghtTest", true)]
-    public void ShouldReturnErrorWhenBadgeNameValueIsNullOrEmpty(string badgeName, bool useStringGreater128 = false)
+    public void ShouldReturnErrorWhenBadgeNameValueIsInvalid(string badgeName, bool useStringGreater128 = false)
     {
         var value = useStringGreater128 ? stringGreater128 : badgeName;
         
@@ -57,9 +56,21 @@ public class NameTests
 
     [TestMethod]
     [TestCategory("ValueObject - Name")]
-    public void ShouldReturnSuccess()
+    [DataRow("TestFirstName", "TestLastName", "TestName")]
+    [DataRow("TestFirstName", "TestLastName", "")]
+    public void ShouldReturnSuccess(string firstName, string lastName, string badgeName)
     {
-        var name = new Name("TestFirstName", "TestLastName", "TestName");
+        var name = new Name(firstName, lastName, badgeName);
+        
+        Assert.IsTrue(name.IsValid);
+        Assert.AreEqual(name.Notifications.Count, 0);
+    }
+
+    [TestMethod]
+    [TestCategory("ValueObject - Name")]
+    public void ShouldReturnSuccessWhenNullBadgeName()
+    {
+        var name = new Name("TestFirstName", "TestLastName");
         
         Assert.IsTrue(name.IsValid);
         Assert.AreEqual(name.Notifications.Count, 0);
