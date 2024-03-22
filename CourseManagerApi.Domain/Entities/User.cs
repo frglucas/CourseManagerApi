@@ -6,12 +6,14 @@ namespace CourseManagerApi.Domain.Entities;
 
 public class User : Entity
 {
-    public User(Email email, Name name, Document document, PhoneNumber phoneNumber, Gender gender, Address address, DateTime birthDate, Occupation occupation, Tenant tenant, bool isSmoker, string observation)
+    private IList<PhoneNumber> _phoneNumbers;
+
+    public User(Email email, Name name, Document document, Gender gender, Address address, DateTime birthDate, Occupation occupation, Tenant tenant, bool isSmoker, string observation)
     {
+        _phoneNumbers = new List<PhoneNumber>();
         Email = email;
         Name = name;
         Document = document;
-        PhoneNumber = phoneNumber;
         Gender = gender;
         Address = address;
         BirthDate = birthDate;
@@ -29,7 +31,7 @@ public class User : Entity
     public Email Email { get; private set; }
     public Name Name { get; private set; }
     public Document Document { get; private set; }
-    public PhoneNumber PhoneNumber { get; private set; }
+    public IReadOnlyCollection<PhoneNumber> PhoneNumbers { get { return _phoneNumbers.ToArray(); } }
     public Gender Gender { get; private set; }
     public Address Address { get; private set; }
     public DateTime BirthDate { get; private set; }
@@ -41,9 +43,18 @@ public class User : Entity
     public DateTime UpdatedAt { get; private set; }
     public bool Active { get; private set; }
 
+    public void AddPhoneNumber(PhoneNumber phoneNumber)
+    {
+        if (_phoneNumbers.Where(x => x.Equals(phoneNumber)).Count() > 0)
+            AddNotification("User.PhoneNumbers", "Número de celular já cadastrado");
+
+        if (IsValid)
+            _phoneNumbers.Add(phoneNumber);
+    }
+
     protected override void VerifyNotifications()
     {
-        AddNotifications(Email, Name, Document, PhoneNumber, Gender, Address, Occupation, Tenant);
+        AddNotifications(Email, Name, Document, Gender, Address, Occupation, Tenant);
 
         if (!String.IsNullOrEmpty(Observation))
             AddNotifications(

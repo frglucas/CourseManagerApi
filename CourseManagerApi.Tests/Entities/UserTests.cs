@@ -38,7 +38,7 @@ public class UserTests
     {
         var value = useStringGreater256 ? stringGreater256 : observation;
 
-        var user = new User(_email, _name, _document, _phoneNumber, _gender, _address, DateTime.Now, _occupation, _tenant, false, value);
+        var user = new User(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, value);
 
         Assert.IsFalse(user.IsValid);
     }
@@ -47,7 +47,7 @@ public class UserTests
     [TestCategory("Entities - User")]
     public void ShouldReturnSuccessWhenValidParams()
     {
-        var user = new User(_email, _name, _document, _phoneNumber, _gender, _address, DateTime.Now, _occupation, _tenant, false, "Test");
+        var user = new User(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, "Test");
 
         Assert.IsTrue(user.IsValid);
     }
