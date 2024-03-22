@@ -17,6 +17,13 @@ public class PhoneNumber : ValueObject
     public string AreaCode { get; private set; }
     public string Number { get; private set; }
 
+    public override bool Equals(object? obj)
+    {
+        return obj is PhoneNumber number &&
+                    AreaCode == number.AreaCode &&
+                    Number == number.Number;
+    }
+
     public override bool Validate()
     {
         VerifyNotifications();
