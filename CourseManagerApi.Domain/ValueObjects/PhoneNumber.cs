@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using CourseManagerApi.Domain.Extensions;
 using CourseManagerApi.Shared.ValueObjects;
 using Flunt.Validations;
 
@@ -30,9 +31,9 @@ public class PhoneNumber : ValueObject
                 new Contract<PhoneNumber>()
                     .Requires()
                     .AreEquals(AreaCode.Length, 2, "PhoneNumber.AreaCode", "Código de área deve possuir 2 digitos")
-                    .IsTrue(Regex.IsMatch(AreaCode, "^[1-9]{2}$"), "PhoneNumber.AreaCode", "Formato do código de área inválido")
+                    .IsTrue(AreaCode.IsAreaCode(), "PhoneNumber.AreaCode", "Formato do código de área inválido")
                     .AreEquals(Number.Length, 9, "PhoneNumber.Number", "Número de celular deve possuir 9 dígitos")
-                    .IsTrue(Regex.IsMatch(Number, "^(?:[2-8]|9[0-9])[0-9]{3}[0-9]{4}$"), "PhoneNumber.Number", "Formato do número de celular inválido")
+                    .IsTrue(Number.IsPhoneNumber(), "PhoneNumber.Number", "Formato do número de celular inválido")
             );
     }
 

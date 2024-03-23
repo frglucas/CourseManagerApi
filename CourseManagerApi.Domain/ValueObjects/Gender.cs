@@ -1,4 +1,5 @@
 using CourseManagerApi.Domain.Enums;
+using CourseManagerApi.Domain.Extensions;
 using CourseManagerApi.Shared.ValueObjects;
 using Flunt.Validations;
 
@@ -17,8 +18,6 @@ public class Gender : ValueObject
     public EGenderType GenderType { get; private set; }
     public string GenderDetail { get; private set; }
 
-    private bool GenderTypeIsOther() => GenderType.Equals(EGenderType.Other);
-
     public override bool Validate()
     {
         VerifyNotifications();
@@ -27,7 +26,7 @@ public class Gender : ValueObject
 
     protected override void VerifyNotifications()
     {
-        if (VerifyNullValuesToNotifications() && GenderTypeIsOther())
+        if (VerifyNullValuesToNotifications() && !String.IsNullOrEmpty(GenderDetail))
             AddNotifications(
                 new Contract<Gender>()
                     .Requires()
@@ -44,7 +43,7 @@ public class Gender : ValueObject
                 .IsNotNullOrEmpty(GenderType.ToString(), "Gender.GenderType", "Gênero inválido")
         );
 
-        if (GenderTypeIsOther())
+        if (GenderType.IsOther())
             AddNotifications(
                 new Contract<Gender>()
                     .Requires()

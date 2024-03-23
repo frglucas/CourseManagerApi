@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using CourseManagerApi.Domain.Extensions;
 using CourseManagerApi.Shared.ValueObjects;
 using Flunt.Validations;
 
@@ -27,7 +28,7 @@ public class Email : ValueObject
             AddNotifications(
                 new Contract<Email>()
                     .Requires()
-                    .IsTrue(Regex.IsMatch(Value, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"), "Email.Value", "Email em formato inválido")
+                    .IsTrue(Value.IsEmail(), "Email.Value", "Email em formato inválido")
             );
     }
 
