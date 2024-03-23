@@ -12,16 +12,22 @@ public static class DocumentUtils
             case EDocumentType.CPF:
                 return ValidateCPF(document);
             case EDocumentType.CNPJ:
-                return true;
+                return ValidateCNPJ(document);
             default:
                 return false;
         }
     }
 
-    private static bool ValidateCPF(string document)
+    public static string FilterOnlyNumbers(string numberDocument)
     {
         var regex = new Regex(@"[^\d]");
-        var digitsOnly = regex.Replace(document, "");
+        var digitsOnly = regex.Replace(numberDocument, "");
+        return digitsOnly;
+    }
+
+    private static bool ValidateCPF(string document)
+    {
+        var digitsOnly = FilterOnlyNumbers(document);
 
         if (digitsOnly.Length != 11) return false;
         
@@ -45,5 +51,23 @@ public static class DocumentUtils
         if (remainder != decimal.Parse(digitsOnly.Substring(10, 1))) return false;
 
         return true;
+    }
+
+    private static int CalcDigits(int[] weights, string digitsOnly)
+    {
+        int soma = digitsOnly.Take(weights.Length).Select((c, i) => (c - '0') * weights[i]).Sum();
+        return soma % 11 < 2 ? 0 : 11 - soma % 11;
+    }
+
+    private static bool ValidateCNPJ(string document)
+    {
+        var digitsOnly = FilterOnlyNumbers(document);
+
+        if (digitsOnly.Length != 14 || digitsOnly.Distinct().Count() == 1) return false;
+
+        int[] weightOne = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+        int[] weightTwo = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+
+        return digitsOnly[12] - '0' == CalcDigits(weightOne, digitsOnly) && digitsOnly[13] - '0' == CalcDigits(weightTwo, digitsOnly);
     }
 }

@@ -9,14 +9,18 @@ public class Document : ValueObject
 {
     public Document(string number, EDocumentType documentType)
     {
-        Number = number.Trim();
+        Number = DocumentUtils.FilterOnlyNumbers(number.Trim());
+        EncryptNumber = String.Empty;
         DocumentType = documentType;
 
         VerifyNotifications();
     }
 
     public string Number { get; private set; }
+    public string EncryptNumber { get; private set; }
     public EDocumentType DocumentType { get; private set; }
+
+    public void GenerateEncryptNumber(byte[] key, byte[] iv) => EncryptNumber = EncryptUtils.Encrypt(Number, key, iv);
 
     public override bool Validate()
     {
