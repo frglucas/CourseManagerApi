@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using CourseManagerApi.Domain.Enums;
 using CourseManagerApi.Domain.Extensions;
@@ -6,7 +5,7 @@ using CourseManagerApi.Shared.Commands;
 using Flunt.Notifications;
 using Flunt.Validations;
 
-namespace CourseManagerApi.Domain.Commands.Client;
+namespace CourseManagerApi.Domain.Commands.ClientCommands;
 
 #pragma warning disable CS8618
 public class CreateClientCommand : Notifiable<Notification>, ICommand
@@ -30,6 +29,7 @@ public class CreateClientCommand : Notifiable<Notification>, ICommand
     public string ZipCode { get; set; }
     public string AddOnAddress { get; set; }
     public DateTime BirthDate { get; set; }
+    public int OccupationId { get; set; }
     public bool IsSmoker { get; set; }
     public string Observation { get; set; }
 
