@@ -1,4 +1,4 @@
-using CourseManagerApi.Domain.ValueObjects;
+using CourseManagerApi.Domain.Entities;
 
 namespace CourseManagerApi.Tests.ValueObjects;
 
@@ -15,7 +15,7 @@ public class PhoneNumberTests
     {
         var phoneNumber = new PhoneNumber(areaCode, "987654321");
 
-        Assert.IsFalse(phoneNumber.Validate());
+        Assert.IsFalse(phoneNumber.IsValid);
     }
 
     [TestMethod]
@@ -26,7 +26,7 @@ public class PhoneNumberTests
     {
         var phoneNumber = new PhoneNumber("51", number);
 
-        Assert.IsFalse(phoneNumber.Validate());
+        Assert.IsFalse(phoneNumber.IsValid);
     }
 
     [TestMethod]
@@ -39,7 +39,7 @@ public class PhoneNumberTests
         var phoneNumberOne = new PhoneNumber(areaCodeOne, numberOne);
         var phoneNumberTwo = new PhoneNumber(areaCodeTwo, numberTwo);
 
-        Assert.IsTrue(phoneNumberOne.Validate() && phoneNumberTwo.Validate());
+        Assert.IsTrue(phoneNumberOne.IsValid && phoneNumberTwo.IsValid);
         Assert.IsFalse(phoneNumberOne.Equals(phoneNumberTwo));
     }
 
@@ -53,7 +53,7 @@ public class PhoneNumberTests
         var phoneNumberOne = new PhoneNumber(areaCodeOne, numberOne);
         var phoneNumberTwo = new PhoneNumber(areaCodeTwo, numberTwo);
 
-        Assert.IsTrue(phoneNumberOne.Validate() && phoneNumberTwo.Validate());
+        Assert.IsTrue(phoneNumberOne.IsValid && phoneNumberTwo.IsValid);
         Assert.IsTrue(phoneNumberOne.Equals(phoneNumberTwo));
     }
 
@@ -68,6 +68,6 @@ public class PhoneNumberTests
     {
         var phoneNumber = new PhoneNumber(areaCode, number);
 
-        Assert.IsTrue(phoneNumber.Validate());
+        Assert.IsTrue(phoneNumber.IsValid);
     }
 }

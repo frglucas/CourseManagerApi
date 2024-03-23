@@ -1,11 +1,10 @@
-using System.Text.RegularExpressions;
 using CourseManagerApi.Domain.Extensions;
-using CourseManagerApi.Shared.ValueObjects;
+using CourseManagerApi.Shared.Entities;
 using Flunt.Validations;
 
-namespace CourseManagerApi.Domain.ValueObjects;
+namespace CourseManagerApi.Domain.Entities;
 
-public class PhoneNumber : ValueObject
+public class PhoneNumber : Entity
 {
     public PhoneNumber(string areaCode,string number)
     {
@@ -18,26 +17,7 @@ public class PhoneNumber : ValueObject
     public string AreaCode { get; private set; }
     public string Number { get; private set; }
 
-    public override bool Validate()
-    {
-        VerifyNotifications();
-        return IsValid;
-    }
-
     protected override void VerifyNotifications()
-    {
-        if (VerifyNullValuesToNotifications())
-            AddNotifications(
-                new Contract<PhoneNumber>()
-                    .Requires()
-                    .AreEquals(AreaCode.Length, 2, "PhoneNumber.AreaCode", "Código de área deve possuir 2 digitos")
-                    .IsTrue(AreaCode.IsAreaCode(), "PhoneNumber.AreaCode", "Formato do código de área inválido")
-                    .AreEquals(Number.Length, 9, "PhoneNumber.Number", "Número de celular deve possuir 9 dígitos")
-                    .IsTrue(Number.IsPhoneNumber(), "PhoneNumber.Number", "Formato do número de celular inválido")
-            );
-    }
-
-    protected override bool VerifyNullValuesToNotifications()
     {
         AddNotifications(
             new Contract<PhoneNumber>()
@@ -46,7 +26,15 @@ public class PhoneNumber : ValueObject
                 .IsNotNullOrEmpty(Number, "PhoneNumber.Number", "Número de celular inválido")
         );
 
-        return IsValid;
+        if (IsValid)
+            AddNotifications(
+                new Contract<PhoneNumber>()
+                    .Requires()
+                    .AreEquals(AreaCode.Length, 2, "PhoneNumber.AreaCode", "Código de área deve possuir 2 digitos")
+                    .IsTrue(AreaCode.IsAreaCode(), "PhoneNumber.AreaCode", "Formato do código de área inválido")
+                    .AreEquals(Number.Length, 9, "PhoneNumber.Number", "Número de celular deve possuir 9 dígitos")
+                    .IsTrue(Number.IsPhoneNumber(), "PhoneNumber.Number", "Formato do número de celular inválido")
+            );
     }
 
     public override bool Equals(object? obj)
