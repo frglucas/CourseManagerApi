@@ -5,19 +5,6 @@ namespace CourseManagerApi.Domain.Utils;
 
 public static class DocumentUtils
 {
-    public static bool Validate(this EDocumentType documentType, string document) 
-    {
-        switch (documentType)
-        {
-            case EDocumentType.CPF:
-                return ValidateCPF(document);
-            case EDocumentType.CNPJ:
-                return ValidateCNPJ(document);
-            default:
-                return false;
-        }
-    }
-
     public static string FilterOnlyNumbers(string numberDocument)
     {
         var regex = new Regex(@"[^\d]");
@@ -25,7 +12,7 @@ public static class DocumentUtils
         return digitsOnly;
     }
 
-    private static bool ValidateCPF(string document)
+    public static bool ValidateCPF(string document)
     {
         var digitsOnly = FilterOnlyNumbers(document);
 
@@ -59,7 +46,7 @@ public static class DocumentUtils
         return soma % 11 < 2 ? 0 : 11 - soma % 11;
     }
 
-    private static bool ValidateCNPJ(string document)
+    public static bool ValidateCNPJ(string document)
     {
         var digitsOnly = FilterOnlyNumbers(document);
 

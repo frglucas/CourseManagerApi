@@ -1,4 +1,5 @@
 using CourseManagerApi.Domain.Enums;
+using CourseManagerApi.Domain.Extensions;
 using CourseManagerApi.Domain.Utils;
 using CourseManagerApi.Shared.ValueObjects;
 using Flunt.Validations;
