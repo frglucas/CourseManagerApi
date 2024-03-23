@@ -54,7 +54,11 @@ public class Client : Entity
 
     protected override void VerifyNotifications()
     {
-        AddNotifications(Email, Name, Document, Gender, Address, Occupation, Tenant);
+        AddNotifications(Email, Name, Document, Gender, Address, Occupation, Tenant,
+            new Contract<Client>()
+                .Requires()
+                .IsNotNull(BirthDate, "Client.BirthDate", "Data de nascimento deve ser informado")
+        );
 
         if (!String.IsNullOrEmpty(Observation))
             AddNotifications(
