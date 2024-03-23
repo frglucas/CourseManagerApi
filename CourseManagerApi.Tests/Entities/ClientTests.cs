@@ -38,17 +38,17 @@ public class ClientTests
     {
         var value = useStringGreater256 ? stringGreater256 : observation;
 
-        var Client = new Client(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, value);
+        var client = new Client(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, value);
 
-        Assert.IsFalse(Client.IsValid);
+        Assert.IsFalse(client.IsValid);
     }
 
     [TestMethod]
     [TestCategory("Entities - Client")]
     public void ShouldReturnSuccessWhenValidParams()
     {
-        var Client = new Client(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, "Test");
+        var client = new Client(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, "Test");
 
-        Assert.IsTrue(Client.IsValid);
+        Assert.IsTrue(client.IsValid);
     }
 }
