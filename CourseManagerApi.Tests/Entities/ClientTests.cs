@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestPlatform.CrossPlatEngine;
 namespace CourseManagerApi.Tests.Entities;
 
 [TestClass]
-public class UserTests
+public class ClientTests
 {
     public static readonly string stringGreater256 = new string('a', 257);
 
@@ -19,7 +19,7 @@ public class UserTests
     private readonly Occupation _occupation;
     private readonly Tenant _tenant;
 
-    public UserTests()
+    public ClientTests()
     {
         _email = new Email("test@mail.com.br");
         _name = new Name("TestName", "TestLastName", "TestBadgeName");
@@ -32,23 +32,23 @@ public class UserTests
     }
 
     [TestMethod]
-    [TestCategory("Entities - User")]
+    [TestCategory("Entities - Client")]
     [DataRow("Simple observation Plus", true)]
     public void ShouldReturnErrorWhenInvalidParams(string observation, bool useStringGreater256 = false)
     {
         var value = useStringGreater256 ? stringGreater256 : observation;
 
-        var user = new User(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, value);
+        var Client = new Client(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, value);
 
-        Assert.IsFalse(user.IsValid);
+        Assert.IsFalse(Client.IsValid);
     }
 
     [TestMethod]
-    [TestCategory("Entities - User")]
+    [TestCategory("Entities - Client")]
     public void ShouldReturnSuccessWhenValidParams()
     {
-        var user = new User(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, "Test");
+        var Client = new Client(_email, _name, _document, _gender, _address, DateTime.Now, _occupation, _tenant, false, "Test");
 
-        Assert.IsTrue(user.IsValid);
+        Assert.IsTrue(Client.IsValid);
     }
 }

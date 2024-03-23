@@ -4,11 +4,11 @@ using Flunt.Validations;
 
 namespace CourseManagerApi.Domain.Entities;
 
-public class User : Entity
+public class Client : Entity
 {
     private IList<PhoneNumber> _phoneNumbers;
 
-    public User(Email email, Name name, Document document, Gender gender, Address address, DateTime birthDate, Occupation occupation, Tenant tenant, bool isSmoker, string observation)
+    public Client(Email email, Name name, Document document, Gender gender, Address address, DateTime birthDate, Occupation occupation, Tenant tenant, bool isSmoker, string observation)
     {
         _phoneNumbers = new List<PhoneNumber>();
         Email = email;
@@ -46,7 +46,7 @@ public class User : Entity
     public void AddPhoneNumber(PhoneNumber phoneNumber)
     {
         if (_phoneNumbers.Where(x => x.Equals(phoneNumber)).Count() > 0)
-            AddNotification("User.PhoneNumbers", "Número de celular já cadastrado");
+            AddNotification("Client.PhoneNumbers", "Número de celular já cadastrado");
 
         if (IsValid)
             _phoneNumbers.Add(phoneNumber);
@@ -58,9 +58,9 @@ public class User : Entity
 
         if (!String.IsNullOrEmpty(Observation))
             AddNotifications(
-                new Contract<User>()
+                new Contract<Client>()
                     .Requires()
-                    .IsLowerOrEqualsThan(Observation.Length, 256, "User.Observation", "Observação deve ser menor ou igual a 256 caracteres")
+                    .IsLowerOrEqualsThan(Observation.Length, 256, "Client.Observation", "Observação deve ser menor ou igual a 256 caracteres")
             );
     }
 }
