@@ -73,6 +73,7 @@ public class Handler : IRequestHandler<Request, Response>
                 Id = user.Id.ToString(),
                 Name = user.Name,
                 Email = user.Email,
+                TenantId = user.TenantId.ToString(),
                 Roles = user.Roles.Select(x => x.Name).ToArray()
             };
 

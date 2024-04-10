@@ -5,7 +5,7 @@ public abstract class Entity : IEquatable<Guid>
     protected Entity() => Id = Guid.NewGuid();
 
     public Guid Id { get; }
-    public Guid TenantId { get; private set; } = Guid.Empty;
+    public Guid? TenantId { get; private set; } = null;
 
     public bool Equals(Guid id) => Id == id;
 

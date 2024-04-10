@@ -2,6 +2,7 @@ using CourseManagerApi.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
+builder.AddHttpContextAcessor();
 builder.AddDatabase();
 builder.AddJwtAuthentication();
 // builder.Services.AddSwaggerGen();

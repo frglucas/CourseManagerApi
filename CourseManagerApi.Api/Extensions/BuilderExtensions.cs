@@ -46,4 +46,8 @@ public static class BuilderExtensions
     {
         builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(Configuration).Assembly));
     }
+
+    public static void AddHttpContextAcessor(this WebApplicationBuilder builder) =>
+        builder.Services.AddHttpContextAccessor();
+        // builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 }

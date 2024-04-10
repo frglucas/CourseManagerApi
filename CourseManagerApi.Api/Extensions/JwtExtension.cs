@@ -35,6 +35,9 @@ public static class JwtExtension
         ci.AddClaim(new Claim(ClaimTypes.GivenName, user.Name));
         ci.AddClaim(new Claim(ClaimTypes.Name, user.Email));
         
+        if (user.TenantId != null)
+            ci.AddClaim(new Claim("tenantId", user.TenantId));
+        
         foreach (var role in user.Roles)
             ci.AddClaim(new Claim(ClaimTypes.Role, role));
 
