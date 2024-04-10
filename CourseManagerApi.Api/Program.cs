@@ -3,6 +3,7 @@ using CourseManagerApi.Api.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
 builder.AddDatabase();
+builder.AddJwtAuthentication();
 // builder.Services.AddSwaggerGen();
 
 builder.AddAccountContext();
@@ -20,6 +21,8 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapAccountEndpoints();
 

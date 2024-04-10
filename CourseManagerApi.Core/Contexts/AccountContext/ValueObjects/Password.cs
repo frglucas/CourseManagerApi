@@ -70,7 +70,7 @@ public class Password : ValueObject
             password,
             salt,
             iterations,
-            HashAlgorithmName.SHA256);
+            HashAlgorithmName.SHA512);
         var keyToCheck = algorithm.GetBytes(keySize);
 
         return keyToCheck.SequenceEqual(key);

@@ -12,6 +12,7 @@ public static class Configuration
 
     public class SecretsConfiguration
     {
+        public string JwtPrivateKey { get; set; } = string.Empty;
         public string PasswordSaltKey { get; set; } = string.Empty;
     }
 }
