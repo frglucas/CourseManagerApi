@@ -9,7 +9,7 @@ public class Name : ValueObject
     public Name(string value)
     {
         if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
-            throw new Exception("Primeiro nome inválido");
+            throw new Exception("Nome inválido");
                 
         Value = value;
     }

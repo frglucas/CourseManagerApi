@@ -12,6 +12,7 @@ public static class BuilderExtensions
     public static void AddConfiguration(this WebApplicationBuilder builder)
     {
         Configuration.Database.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
+        Configuration.Secrets.StringSaltKey = builder.Configuration.GetSection("Secrets").GetValue<string>("StringSaltKey") ?? string.Empty;
         Configuration.Secrets.JwtPrivateKey = builder.Configuration.GetSection("Secrets").GetValue<string>("JwtPrivateKey") ?? string.Empty;
         Configuration.Secrets.PasswordSaltKey = builder.Configuration.GetSection("Secrets").GetValue<string>("PasswordSaltKey") ?? string.Empty;
     }
