@@ -8,6 +8,7 @@ builder.AddJwtAuthentication();
 // builder.Services.AddSwaggerGen();
 
 builder.AddAccountContext();
+builder.AddClientContext();
 
 builder.AddMediator();
 
@@ -26,5 +27,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapAccountEndpoints();
+app.MapClientEndpoints();
 
 app.Run();
