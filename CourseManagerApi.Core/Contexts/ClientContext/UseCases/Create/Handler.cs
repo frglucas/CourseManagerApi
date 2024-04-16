@@ -38,8 +38,8 @@ public class Handler : IRequestHandler<Request, Response>
     
         #region 02. Recupera objetos
 
-        Occupation occupation;
-        Tenant tenant;
+        Occupation? occupation;
+        Tenant? tenant;
 
         try
         {
