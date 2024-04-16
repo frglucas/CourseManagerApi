@@ -45,7 +45,7 @@ public class Handler : IRequestHandler<Request, Response>
         {
             occupation = await _repository.FindOccupationById(request.OccupationId, cancellationToken);
             if (occupation == null)
-                return new Response("Não encotramos a ocupação profissional informada", 404);
+                return new Response("Não encontramos a ocupação profissional informada", 404);
 
             var tenantId = _contextAccessor.HttpContext.User.TenantId();
             tenant = await _repository.FindTenantById(tenantId, cancellationToken);

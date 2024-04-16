@@ -44,4 +44,6 @@ public class Client : Entity
         if (Tenant == null)
             Tenant = tenant;
     }
+
+    public void Deactivate() => IsActive = false;
 }
