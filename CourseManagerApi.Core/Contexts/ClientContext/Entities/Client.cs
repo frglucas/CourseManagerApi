@@ -45,5 +45,14 @@ public class Client : Entity
             Tenant = tenant;
     }
 
+    public void SetEmail(Email email) => Email = email;
+    public void SetName(AccountContext.ValueObjects.Name name) => Name = name;
+    public void SetDocument(Document document) => Document = document;
+    public void SetBirthDate(DateTime birthDate) => BirthDate = birthDate;
+    public void SetOccupation(Occupation occupation) => Occupation = occupation;
+    public void SetIsSmoker(bool isSmoker) => IsSmoker = isSmoker;
+    public void SetGender(Gender gender) => Gender = gender;
+    public void SetObservation(string observation) => Observation = observation;
+
     public void Deactivate() => IsActive = false;
 }

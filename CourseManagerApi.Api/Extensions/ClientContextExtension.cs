@@ -22,6 +22,14 @@ public static class ClientContextExtensions
             CourseManagerApi.Infra.Contexts.ClientContext.UseCases.Delete.Repository>();
 
         #endregion
+
+        #region Edit
+
+        builder.Services.AddScoped<
+            CourseManagerApi.Core.Contexts.ClientContext.UseCases.Edit.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClientContext.UseCases.Edit.Repository>();
+
+        #endregion
     }
 
     public static void MapClientEndpoints(this WebApplication app)
@@ -49,6 +57,20 @@ public static class ClientContextExtensions
             IRequestHandler<
                 CourseManagerApi.Core.Contexts.ClientContext.UseCases.Delete.Request,
                 CourseManagerApi.Core.Contexts.ClientContext.UseCases.Delete.Response> handler) => 
+        {
+            var result = await handler.Handle(request, new CancellationToken());
+            return Results.Json(result, statusCode: result.Status);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region Edit
+
+        app.MapPut("api/v1/clients", async (
+            CourseManagerApi.Core.Contexts.ClientContext.UseCases.Edit.Request request,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClientContext.UseCases.Edit.Request,
+                CourseManagerApi.Core.Contexts.ClientContext.UseCases.Edit.Response> handler) => 
         {
             var result = await handler.Handle(request, new CancellationToken());
             return Results.Json(result, statusCode: result.Status);
