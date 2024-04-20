@@ -9,6 +9,7 @@ builder.AddJwtAuthentication();
 
 builder.AddAccountContext();
 builder.AddClientContext();
+builder.AddCourseContext();
 
 builder.AddMediator();
 
@@ -28,5 +29,6 @@ app.UseAuthorization();
 
 app.MapAccountEndpoints();
 app.MapClientEndpoints();
+app.MapCourseEndpoints();
 
 app.Run();
