@@ -10,6 +10,10 @@ using CourseManagerApi.Core.Contexts.TenantContext.Entities;
 using CourseManagerApi.Infra.Contexts.ClientContext.Mappings;
 using CourseManagerApi.Core.Contexts.CourseContext.Entities;
 using CourseManagerApi.Infra.Contexts.CourseContext.Mappings;
+using CourseManagerApi.Infra.Contexts.ClassContext.Mappings;
+using CourseManagerApi.Infra.Contexts.PaymentContext.Mappings;
+using CourseManagerApi.Core.Contexts.ClassContext.Entities;
+using CourseManagerApi.Core.Contexts.PaymentContext.Entities;
 
 namespace CourseManagerApi.Infra.Data;
 
@@ -28,6 +32,10 @@ public class CourseManagerDbContext : DbContext
     public DbSet<Address> Addresses { get; set; } = null!;
     public DbSet<PhoneNumber> PhoneNumbers { get; set; } = null!;
     public DbSet<Course> Courses { get; set; } = null!;
+    public DbSet<Class> Classes { get; set; } = null!;
+    public DbSet<Contract> Contracts { get; set; } = null!;
+    public DbSet<Payment> Payments { get; set; } = null!;
+    public DbSet<Installment> Installments { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,11 +47,19 @@ public class CourseManagerDbContext : DbContext
         modelBuilder.ApplyConfiguration(new AddressMap());
         modelBuilder.ApplyConfiguration(new PhoneNumberMap());
         modelBuilder.ApplyConfiguration(new CourseMap());
+        modelBuilder.ApplyConfiguration(new ClassMap());
+        modelBuilder.ApplyConfiguration(new ContractMap());
+        modelBuilder.ApplyConfiguration(new PaymentMap());
+        modelBuilder.ApplyConfiguration(new InstallmentMap());
 
         modelBuilder.Ignore(typeof(Notification));
 
         var tenantId = _httpContextAccessor.HttpContext?.User.TenantId();
         modelBuilder.Entity<Client>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
         modelBuilder.Entity<Course>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
+        modelBuilder.Entity<Class>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
+        modelBuilder.Entity<Contract>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
+        modelBuilder.Entity<Payment>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
+        modelBuilder.Entity<Installment>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
     }
 }
