@@ -51,4 +51,7 @@ public static class BuilderExtensions
     public static void AddHttpContextAcessor(this WebApplicationBuilder builder) =>
         builder.Services.AddHttpContextAccessor();
         // builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+
+    public static void AddCorsPolicy(this WebApplicationBuilder builder) => 
+            builder.Services.AddCors(options => { options.AddPolicy("CourseManagerCors", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); }); });
 }

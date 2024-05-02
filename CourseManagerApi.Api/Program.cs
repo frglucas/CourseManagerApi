@@ -12,6 +12,7 @@ builder.AddClientContext();
 builder.AddCourseContext();
 
 builder.AddMediator();
+builder.AddCorsPolicy();
 
 var app = builder.Build();
 
@@ -22,6 +23,7 @@ var app = builder.Build();
 // }
 
 app.UseHttpsRedirection();
+app.UseCors("CourseManagerCors");
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();

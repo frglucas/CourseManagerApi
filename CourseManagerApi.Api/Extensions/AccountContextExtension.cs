@@ -21,6 +21,14 @@ public static class AccountContextExtension
             CourseManagerApi.Infra.Contexts.AccountContext.UseCases.Authenticate.Repository>();
 
         #endregion
+
+        #region Get
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.AccountContext.UseCases.Get.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.AccountContext.UseCases.Get.Repository>();
+
+        #endregion
     }
 
     public static void MapAccountEndpoints(this WebApplication app)
@@ -59,6 +67,25 @@ public static class AccountContextExtension
             result.Data.Token = JwtExtension.Generate(result.Data);
             return Results.Ok(result);
         });
+
+        #endregion
+
+        #region Get
+
+        app.MapGet("api/v1/user", async (
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.AccountContext.UseCases.Get.Request,
+                CourseManagerApi.Core.Contexts.AccountContext.UseCases.Get.Response> handler) =>
+        {
+            var result = await handler.Handle(new(), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
+        }).RequireAuthorization();
 
         #endregion
     }
