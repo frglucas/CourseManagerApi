@@ -16,5 +16,6 @@ public class Repository : IRepository
             .Occupations
             .AsNoTracking()
             .Where(x => x.Description.ToUpper().Contains(term.ToUpper()))
+            .OrderBy(x => x.Description)
             .ToListAsync(cancellationToken);
 }
