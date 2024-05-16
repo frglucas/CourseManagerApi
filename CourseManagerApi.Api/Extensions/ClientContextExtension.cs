@@ -30,6 +30,14 @@ public static class ClientContextExtensions
             CourseManagerApi.Infra.Contexts.ClientContext.UseCases.Edit.Repository>();
 
         #endregion
+
+        #region GetAllOccupations
+
+        builder.Services.AddScoped<
+            CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClientContext.UseCases.GetAllOccupations.Repository>();
+
+        #endregion
     }
 
     public static void MapClientEndpoints(this WebApplication app)
@@ -74,6 +82,26 @@ public static class ClientContextExtensions
         {
             var result = await handler.Handle(request, new CancellationToken());
             return Results.Json(result, statusCode: result.Status);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region Get
+
+        app.MapGet("api/v1/clients/occupations", async (
+            [FromBody] CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations.Request request,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations.Request,
+                CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations.Response> handler) =>
+        {
+            var result = await handler.Handle(request, new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
         }).RequireAuthorization();
 
         #endregion
