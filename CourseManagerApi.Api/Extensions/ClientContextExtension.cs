@@ -89,12 +89,12 @@ public static class ClientContextExtensions
         #region Get
 
         app.MapGet("api/v1/clients/occupations", async (
-            [FromBody] CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations.Request request,
+            [FromQuery] string term,
             IRequestHandler<
                 CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations.Request,
                 CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations.Response> handler) =>
         {
-            var result = await handler.Handle(request, new CancellationToken());
+            var result = await handler.Handle(new(term), new CancellationToken());
             if (!result.IsSuccess)
                 return Results.Json(result, statusCode: result.Status);
 
