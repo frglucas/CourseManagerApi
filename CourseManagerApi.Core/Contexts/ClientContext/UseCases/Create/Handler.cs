@@ -2,6 +2,7 @@ using CourseManagerApi.Core.Contexts.ClientContext.Entities;
 using CourseManagerApi.Core.Contexts.ClientContext.UseCases.Create.Contracts;
 using CourseManagerApi.Core.Contexts.ClientContext.ValueObjects;
 using CourseManagerApi.Core.Contexts.TenantContext.Entities;
+using CourseManagerApi.Core.Utils;
 using CourseManagerApi.Shared.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -69,7 +70,7 @@ public class Handler : IRequestHandler<Request, Response>
 
         try
         {
-            document = new Document(request.Document, request.DocumentType);
+            document = new Document(StringUtils.FilterOnlyNumbers(request.Document), request.DocumentType);
             email = new Email(request.Email);
             gender = new Gender(request.GenderType, request.GenderDetail);
             name = new AccountContext.ValueObjects.Name(request.Name);
