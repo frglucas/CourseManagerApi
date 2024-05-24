@@ -21,8 +21,15 @@ public class ClientMap : IEntityTypeConfiguration<Client>
             .IsRequired(true);
 
         builder.OwnsOne(x => x.Name)
-            .Property(x => x.Value)
-            .HasColumnName("Name")
+            .Property(x => x.FullName)
+            .HasColumnName("FullName")
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(256)
+            .IsRequired(true);
+
+        builder.OwnsOne(x => x.Name)
+            .Property(x => x.BadgeName)
+            .HasColumnName("BadgeName")
             .HasColumnType("NVARCHAR")
             .HasMaxLength(256)
             .IsRequired(true);

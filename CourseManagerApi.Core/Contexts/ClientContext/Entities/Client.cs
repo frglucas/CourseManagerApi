@@ -7,7 +7,7 @@ namespace CourseManagerApi.Core.Contexts.ClientContext.Entities;
 public class Client : Entity
 {
     protected Client() { }
-    public Client(Email email, AccountContext.ValueObjects.Name name, Document document, Gender gender, DateTime birthDate, Occupation occupation, string observation, bool isSmoker)
+    public Client(Email email, Name name, Document document, Gender gender, DateTime birthDate, Occupation occupation, string observation, bool isSmoker)
     {
         Email = email;
         Name = name;
@@ -23,7 +23,7 @@ public class Client : Entity
     }
 
     public Email Email { get; private set; } = null!;
-    public AccountContext.ValueObjects.Name Name { get; private set; } = null!;
+    public Name Name { get; private set; } = null!;
     public Document Document { get; private set; } = null!;
     public Gender Gender { get; private set; } = null!;
     public DateTime BirthDate { get; private set; } = DateTime.UtcNow;
@@ -46,7 +46,7 @@ public class Client : Entity
     }
 
     public void SetEmail(Email email) => Email = email;
-    public void SetName(AccountContext.ValueObjects.Name name) => Name = name;
+    public void SetName(Name name) => Name = name;
     public void SetDocument(Document document) => Document = document;
     public void SetBirthDate(DateTime birthDate) => BirthDate = birthDate;
     public void SetOccupation(Occupation occupation) => Occupation = occupation;

@@ -5,13 +5,14 @@ namespace CourseManagerApi.Core.Contexts.ClientContext.UseCases.Create;
 
 public record Request(
     string Email, 
-    string Name, 
+    string FullName,
     string Document, 
     EDocumentType DocumentType,
     DateTime BirthDate,
     string OccupationId,
     bool IsSmoker,
     EGenderType GenderType,
+    string BadgeName = "", 
     string Observation = "",
     string GenderDetail = ""
 ) : IRequest<Response>;

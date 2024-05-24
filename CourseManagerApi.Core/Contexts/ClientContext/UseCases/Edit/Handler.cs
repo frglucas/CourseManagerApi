@@ -58,14 +58,17 @@ public class Handler : IRequestHandler<Request, Response>
         Document document;
         Email email;
         Gender gender;
-        AccountContext.ValueObjects.Name name;
+        Name name;
 
         try
         {
             document = new Document(request.Document, request.DocumentType);
             email = new Email(request.Email);
             gender = new Gender(request.GenderType, request.GenderDetail);
-            name = new AccountContext.ValueObjects.Name(request.Name);
+            
+            if (string.IsNullOrEmpty(request.BadgeName) || !string.IsNullOrWhiteSpace(request.BadgeName))
+                name = new Name(request.FullName, request.FullName.Split(" ").First());
+            else name = new Name(request.FullName, request.BadgeName);
         }
         catch (Exception ex)
         {

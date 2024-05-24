@@ -15,7 +15,7 @@ public class Repository : IRepository
         await _context
             .Clients
             .AsNoTracking()
-            .Where(x => x.Name.Value.ToUpper().Contains(term.ToUpper()) || x.Email.Address.ToUpper().Contains(term.ToUpper()))
-            .OrderBy(x => x.Name.Value)
+            .Where(x => x.Name.FullName.ToUpper().Contains(term.ToUpper()) || x.Email.Address.ToUpper().Contains(term.ToUpper()))
+            .OrderBy(x => x.Name.FullName)
             .ToListAsync(cancellationToken);
 }
