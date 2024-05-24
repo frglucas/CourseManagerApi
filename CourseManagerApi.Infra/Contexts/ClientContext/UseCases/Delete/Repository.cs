@@ -14,7 +14,7 @@ public class Repository : IRepository
     public async Task<Client?> FindClientById(string id, CancellationToken cancellationToken) =>
         await _context
             .Clients
-            .FirstOrDefaultAsync(x => x.Id.ToString() == id, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == id.ToUpper(), cancellationToken);
 
     public async Task SaveAsync(CancellationToken cancellationToken)
     {

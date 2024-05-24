@@ -38,6 +38,14 @@ public static class ClientContextExtensions
             CourseManagerApi.Infra.Contexts.ClientContext.UseCases.GetAllOccupations.Repository>();
 
         #endregion
+
+        #region GetAllByNameOrEmailAndPaged
+
+        builder.Services.AddScoped<
+            CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllByNameOrEmailAndPaged.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClientContext.UseCases.GetAllByNameOrEmailAndPaged.Repository>();
+
+        #endregion
     }
 
     public static void MapClientEndpoints(this WebApplication app)
@@ -60,13 +68,13 @@ public static class ClientContextExtensions
 
         #region Delete
 
-        app.MapDelete("api/v1/clients", async (
-            [FromBody] CourseManagerApi.Core.Contexts.ClientContext.UseCases.Delete.Request request,
+        app.MapDelete("api/v1/clients/{id}", async (
+            [FromRoute] string id,
             IRequestHandler<
                 CourseManagerApi.Core.Contexts.ClientContext.UseCases.Delete.Request,
                 CourseManagerApi.Core.Contexts.ClientContext.UseCases.Delete.Response> handler) => 
         {
-            var result = await handler.Handle(request, new CancellationToken());
+            var result = await handler.Handle(new(id), new CancellationToken());
             return Results.Json(result, statusCode: result.Status);
         }).RequireAuthorization();
 
@@ -86,7 +94,7 @@ public static class ClientContextExtensions
 
         #endregion
 
-        #region Get
+        #region GetAllOccupations
 
         app.MapGet("api/v1/clients/occupations", async (
             [FromQuery] string term,
@@ -95,6 +103,29 @@ public static class ClientContextExtensions
                 CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations.Response> handler) =>
         {
             var result = await handler.Handle(new(term), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region GetAllByNameOrEmailAndPaged
+
+        app.MapGet("api/v1/clients/paged", async (
+            [FromQuery] string term,
+            [FromQuery] bool activeOnly,
+            [FromQuery] int page,
+            [FromQuery] int pageSize,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllByNameOrEmailAndPaged.Request,
+                CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllByNameOrEmailAndPaged.Response> handler) =>
+        {
+            var result = await handler.Handle(new(term, activeOnly, page, pageSize), new CancellationToken());
             if (!result.IsSuccess)
                 return Results.Json(result, statusCode: result.Status);
 
