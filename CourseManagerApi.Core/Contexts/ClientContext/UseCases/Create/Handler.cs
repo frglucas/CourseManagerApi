@@ -74,7 +74,7 @@ public class Handler : IRequestHandler<Request, Response>
             email = new Email(request.Email);
             gender = new Gender(request.GenderType, request.GenderDetail);
             
-            if (string.IsNullOrEmpty(request.BadgeName) || !string.IsNullOrWhiteSpace(request.BadgeName))
+            if (string.IsNullOrEmpty(request.BadgeName) || string.IsNullOrWhiteSpace(request.BadgeName))
                 name = new Name(request.FullName, request.FullName.Split(" ").First());
             else name = new Name(request.FullName, request.BadgeName);
 
