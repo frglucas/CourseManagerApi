@@ -46,6 +46,14 @@ public static class ClientContextExtensions
             CourseManagerApi.Infra.Contexts.ClientContext.UseCases.GetAllByNameOrEmailAndPaged.Repository>();
 
         #endregion
+        
+        #region Get
+
+        builder.Services.AddScoped<
+            CourseManagerApi.Core.Contexts.ClientContext.UseCases.Get.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClientContext.UseCases.Get.Repository>();
+
+        #endregion
     }
 
     public static void MapClientEndpoints(this WebApplication app)
@@ -126,6 +134,26 @@ public static class ClientContextExtensions
                 CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllByNameOrEmailAndPaged.Response> handler) =>
         {
             var result = await handler.Handle(new(term, activeOnly, page, pageSize), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
+        }).RequireAuthorization();
+
+        #endregion
+        
+        #region Get
+
+        app.MapGet("api/v1/clients", async (
+            [FromQuery] string id,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClientContext.UseCases.Get.Request,
+                CourseManagerApi.Core.Contexts.ClientContext.UseCases.Get.Response> handler) =>
+        {
+            var result = await handler.Handle(new(id), new CancellationToken());
             if (!result.IsSuccess)
                 return Results.Json(result, statusCode: result.Status);
 
