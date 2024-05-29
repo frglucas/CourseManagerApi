@@ -8,7 +8,7 @@ public interface IRepository
 {
     Task<bool> AnyByDocumentAsync(string hash, CancellationToken cancellationToken);
     Task<bool> AnyByEmailAsync(string email, CancellationToken cancellationToken);
-    Task<Occupation?> FindOccupationById(string occupationId, CancellationToken cancellationToken);
-    Task<Tenant?> FindTenantById(string tenantId, CancellationToken cancellationToken);
+    Task<Occupation?> FindOccupationByIdAsync(string occupationId, CancellationToken cancellationToken);
+    Task<Tenant?> FindTenantByIdAsync(string tenantId, CancellationToken cancellationToken);
     Task SaveAsync(Client client, CancellationToken cancellationToken);
 }

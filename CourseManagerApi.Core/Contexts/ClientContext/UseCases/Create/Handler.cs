@@ -44,12 +44,12 @@ public class Handler : IRequestHandler<Request, Response>
 
         try
         {
-            occupation = await _repository.FindOccupationById(request.OccupationId, cancellationToken);
+            occupation = await _repository.FindOccupationByIdAsync(request.OccupationId, cancellationToken);
             if (occupation == null)
                 return new Response("Não encontramos a ocupação profissional informada", 404);
 
             var tenantId = _contextAccessor.HttpContext.User.TenantId();
-            tenant = await _repository.FindTenantById(tenantId, cancellationToken);
+            tenant = await _repository.FindTenantByIdAsync(tenantId, cancellationToken);
             if (tenant == null)
                 return new Response("Não foi possível encontrar o tenant", 404);
         }

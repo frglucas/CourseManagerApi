@@ -22,6 +22,19 @@ public class ClassMap : IEntityTypeConfiguration<Class>
             .OnDelete(DeleteBehavior.ClientCascade)
             .IsRequired(true);
 
+        builder.OwnsOne(x => x.Name)
+            .Property(x => x.Value)
+            .HasColumnName("Name")
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(256)
+            .IsRequired(true);
+
+        builder.Property(x => x.AddressOrLink)
+            .HasColumnName("AddressOrLink")
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(512)
+            .IsRequired(true);
+
         builder.Property(x => x.ScheduledDate)
             .HasColumnName("ScheduledDate")
             .IsRequired(true);

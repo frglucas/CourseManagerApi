@@ -10,6 +10,7 @@ builder.AddJwtAuthentication();
 builder.AddAccountContext();
 builder.AddClientContext();
 builder.AddCourseContext();
+builder.AddClassContext();
 
 builder.AddMediator();
 builder.AddCorsPolicy();
@@ -32,5 +33,6 @@ app.UseAuthorization();
 app.MapAccountEndpoints();
 app.MapClientEndpoints();
 app.MapCourseEndpoints();
+app.MapClassEndpoints();
 
 app.Run();

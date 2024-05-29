@@ -24,15 +24,15 @@ public class Repository : IRepository
             .AsNoTracking()
             .AnyAsync(x => x.Email.Address == email, cancellationToken: cancellationToken);
 
-    public async Task<Occupation?> FindOccupationById(string occupationId, CancellationToken cancellationToken) =>
+    public async Task<Occupation?> FindOccupationByIdAsync(string occupationId, CancellationToken cancellationToken) =>
         await _context
             .Occupations
-            .FirstOrDefaultAsync(x => x.Id.ToString() == occupationId, cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == occupationId.ToUpper(), cancellationToken: cancellationToken);
 
-    public async Task<Tenant?> FindTenantById(string tenantId, CancellationToken cancellationToken) =>
+    public async Task<Tenant?> FindTenantByIdAsync(string tenantId, CancellationToken cancellationToken) =>
         await _context
             .Tenants
-            .FirstOrDefaultAsync(x => x.Id.ToString() == tenantId, cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == tenantId.ToUpper(), cancellationToken: cancellationToken);
 
     public async Task SaveAsync(Client client, CancellationToken cancellationToken)
     {
