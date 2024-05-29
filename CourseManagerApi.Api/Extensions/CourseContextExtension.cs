@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CourseManagerApi.Api.Extensions;
 
@@ -11,6 +12,22 @@ public static class CourseContextExtension
         builder.Services.AddTransient<
             CourseManagerApi.Core.Contexts.CourseContext.UseCases.Create.Contracts.IRepository,
             CourseManagerApi.Infra.Contexts.CourseContext.UseCases.Create.Repository>();
+
+        #endregion
+
+        #region Delete
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.CourseContext.UseCases.Delete.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.CourseContext.UseCases.Delete.Repository>();
+
+        #endregion
+
+        #region GetAllByNameAndPaged
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.CourseContext.UseCases.GetAllByNameAndPaged.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.CourseContext.UseCases.GetAllByNameAndPaged.Repository>();
 
         #endregion
     }
@@ -29,6 +46,43 @@ public static class CourseContextExtension
             return result.IsSuccess
                 ? Results.Created($"api/v1/courses/{result.Data?.Id}", result)
                 : Results.Json(result, statusCode: result.Status);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region Delete
+
+        app.MapDelete("api/v1/courses/{id}", async (
+            [FromRoute] string id,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.CourseContext.UseCases.Delete.Request,
+                CourseManagerApi.Core.Contexts.CourseContext.UseCases.Delete.Response> handler) => 
+        {
+            var result = await handler.Handle(new(id), new CancellationToken());
+            return Results.Json(result, statusCode: result.Status);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region GetAllByNameAndPaged
+
+        app.MapGet("api/v1/courses/paged", async (
+            [FromQuery] string term,
+            [FromQuery] bool activeOnly,
+            [FromQuery] int page,
+            [FromQuery] int pageSize,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.CourseContext.UseCases.GetAllByNameAndPaged.Request,
+                CourseManagerApi.Core.Contexts.CourseContext.UseCases.GetAllByNameAndPaged.Response> handler) => 
+        {
+            var result = await handler.Handle(new(term, activeOnly, page, pageSize), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
         }).RequireAuthorization();
 
         #endregion

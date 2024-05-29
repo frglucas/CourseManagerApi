@@ -4,6 +4,6 @@ namespace CourseManagerApi.Core.Contexts.ClientContext.UseCases.Delete.Contracts
 
 public interface IRepository
 {
-    Task<Client?> FindClientById(string id, CancellationToken cancellationToken);
+    Task<Client?> FindClientByIdAsync(string id, CancellationToken cancellationToken);
     Task SaveAsync(CancellationToken cancellationToken);
 }

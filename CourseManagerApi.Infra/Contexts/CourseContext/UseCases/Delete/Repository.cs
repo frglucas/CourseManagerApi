@@ -1,9 +1,9 @@
-using CourseManagerApi.Core.Contexts.ClientContext.Entities;
-using CourseManagerApi.Core.Contexts.ClientContext.UseCases.Delete.Contracts;
+using CourseManagerApi.Core.Contexts.CourseContext.Entities;
+using CourseManagerApi.Core.Contexts.CourseContext.UseCases.Delete.Contracts;
 using CourseManagerApi.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourseManagerApi.Infra.Contexts.ClientContext.UseCases.Delete;
+namespace CourseManagerApi.Infra.Contexts.CourseContext.UseCases.Delete;
 
 public class Repository : IRepository
 {
@@ -11,9 +11,9 @@ public class Repository : IRepository
 
     public Repository(CourseManagerDbContext context) => _context = context;
 
-    public async Task<Client?> FindClientByIdAsync(string id, CancellationToken cancellationToken) =>
+    public async Task<Course?> FindCourseByIdAsync(string id, CancellationToken cancellationToken) =>
         await _context
-            .Clients
+            .Courses
             .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == id.ToUpper(), cancellationToken);
 
     public async Task SaveAsync(CancellationToken cancellationToken)

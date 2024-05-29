@@ -28,4 +28,6 @@ public class Course : Entity
         if (Tenant == null)
             Tenant = tenant;
     }
+
+    public void Deactivate() => IsActive = false;
 }

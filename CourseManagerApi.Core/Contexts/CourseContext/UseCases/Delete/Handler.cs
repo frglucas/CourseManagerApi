@@ -1,7 +1,8 @@
-using CourseManagerApi.Core.Contexts.ClientContext.Entities;
+using CourseManagerApi.Core.Contexts.CourseContext.Entities;
+using CourseManagerApi.Core.Contexts.CourseContext.UseCases.Delete.Contracts;
 using MediatR;
 
-namespace CourseManagerApi.Core.Contexts.ClientContext.UseCases.Delete.Contracts;
+namespace CourseManagerApi.Core.Contexts.CourseContext.UseCases.Delete;
 
 public class Handler : IRequestHandler<Request, Response>
 {
@@ -28,13 +29,13 @@ public class Handler : IRequestHandler<Request, Response>
 
         #region 02. Recupera objetos
 
-        Client? client;
+        Course? course;
 
         try
         {
-            client = await _repository.FindClientByIdAsync(request.Id, cancellationToken);
-            if (client == null)
-                return new Response("Não encontramos o cliente informado", 404);
+            course = await _repository.FindCourseByIdAsync(request.Id, cancellationToken);
+            if (course == null)
+                return new Response("Não encontramos o curso informado", 404);
         }
         catch
         {
@@ -42,11 +43,11 @@ public class Handler : IRequestHandler<Request, Response>
         }
 
         #endregion
+    
+        #region 03. Verifica se curso está ativo
 
-        #region 03. Verifica se cliente está ativo
-
-        if (!client.IsActive)
-            return new Response("Cliente já está desativado", 400);
+        if (!course.IsActive)
+            return new Response("Curso já está desativado", 400);
 
         #endregion
 
@@ -54,7 +55,7 @@ public class Handler : IRequestHandler<Request, Response>
 
         try
         {
-            client.Deactivate();
+            course.Deactivate();
         }
         catch (Exception ex)
         {
@@ -62,7 +63,7 @@ public class Handler : IRequestHandler<Request, Response>
         }
 
         #endregion
-
+    
         #region 05. Persiste dados
 
         try
@@ -76,6 +77,6 @@ public class Handler : IRequestHandler<Request, Response>
 
         #endregion
     
-        return new Response("Cliente desativado");
+        return new Response("Curso desativado");
     }
 }
