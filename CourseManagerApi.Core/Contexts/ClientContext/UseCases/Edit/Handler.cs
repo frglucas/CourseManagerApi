@@ -9,10 +9,7 @@ public class Handler : IRequestHandler<Request, Response>
 {
     private readonly IRepository _repository;
 
-    public Handler(IRepository repository)
-    {
-        _repository = repository;
-    }
+    public Handler(IRepository repository) => _repository = repository;
 
     public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
     {
@@ -38,11 +35,11 @@ public class Handler : IRequestHandler<Request, Response>
 
         try
         {
-            client = await _repository.FindClientById(request.ClientId, cancellationToken);  
+            client = await _repository.FindClientByIdAsync(request.ClientId, cancellationToken);  
             if (client == null)
                 return new Response("Não encontramos o cliente especificado", 404);
 
-            occupation = await _repository.FindOccupationById(request.OccupationId, cancellationToken);
+            occupation = await _repository.FindOccupationByIdAsync(request.OccupationId, cancellationToken);
             if (occupation == null)
                 return new Response("Não encontramos a ocupação profissional informada", 404);
         }
@@ -108,6 +105,7 @@ public class Handler : IRequestHandler<Request, Response>
             client.SetIsSmoker(request.IsSmoker);
             client.SetGender(gender);
             client.SetObservation(request.Observation);
+            client.SetNewUpdateAt();
         }
         catch
         {

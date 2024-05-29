@@ -53,6 +53,7 @@ public class Client : Entity
     public void SetIsSmoker(bool isSmoker) => IsSmoker = isSmoker;
     public void SetGender(Gender gender) => Gender = gender;
     public void SetObservation(string observation) => Observation = observation;
+    public void SetNewUpdateAt() => UpdatedAt = DateTime.UtcNow;
 
     public void Deactivate() => IsActive = false;
 }

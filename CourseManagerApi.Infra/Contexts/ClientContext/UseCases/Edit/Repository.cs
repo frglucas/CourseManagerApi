@@ -23,12 +23,12 @@ public class Repository : IRepository
             .AsNoTracking()
             .AnyAsync(x => x.Email.Address == email, cancellationToken: cancellationToken);
 
-    public async Task<Client?> FindClientById(string clientId, CancellationToken cancellationToken) =>
+    public async Task<Client?> FindClientByIdAsync(string clientId, CancellationToken cancellationToken) =>
         await _context
             .Clients
             .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == clientId.ToUpper(), cancellationToken);
 
-    public async Task<Occupation?> FindOccupationById(string occupationId, CancellationToken cancellationToken) =>
+    public async Task<Occupation?> FindOccupationByIdAsync(string occupationId, CancellationToken cancellationToken) =>
         await _context
             .Occupations
             .FirstOrDefaultAsync(x => x.Id.ToString() == occupationId, cancellationToken: cancellationToken);

@@ -29,5 +29,10 @@ public class Course : Entity
             Tenant = tenant;
     }
 
+    public void SetName(Name name) => Name = name;
+    public void SetDescription(Description description) => Description = description;
+    public void SetNewUpdateAt() => UpdatedAt = DateTime.UtcNow;
+
     public void Deactivate() => IsActive = false;
+
 }
