@@ -1,6 +1,6 @@
 using Flunt.Notifications;
 
-namespace CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllByNameOrEmailAndPaged;
+namespace CourseManagerApi.Core.Contexts.ClassContext.UseCases.GetAllByNameAndPaged;
 
 public class Response : Shared.Contexts.SharedContext.UseCases.Response
 {
@@ -29,4 +29,4 @@ public class Response : Shared.Contexts.SharedContext.UseCases.Response
 }
 
 
-public record ResponseData(Guid Id, string Name, string Email, bool isActive);
+public record ResponseData(Guid Id, string Name, string Course, DateTime ScheduleDate, bool isOnline);
