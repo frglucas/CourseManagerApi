@@ -44,7 +44,7 @@ public static class ClassContextExtensions
 
         #region GetAllByNameOrEmailAndPaged
 
-        app.MapGet("api/v1/classes", async (
+        app.MapGet("api/v1/classes/paged", async (
             [FromQuery] string term,
             [FromQuery] int page,
             [FromQuery] int pageSize,

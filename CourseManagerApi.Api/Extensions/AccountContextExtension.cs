@@ -29,6 +29,14 @@ public static class AccountContextExtension
             CourseManagerApi.Infra.Contexts.AccountContext.UseCases.Get.Repository>();
 
         #endregion
+
+        #region GetAll
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.AccountContext.UseCases.GetAll.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.AccountContext.UseCases.GetAll.Repository>();
+
+        #endregion
     }
 
     public static void MapAccountEndpoints(this WebApplication app)
@@ -76,6 +84,25 @@ public static class AccountContextExtension
             IRequestHandler<
                 CourseManagerApi.Core.Contexts.AccountContext.UseCases.Get.Request,
                 CourseManagerApi.Core.Contexts.AccountContext.UseCases.Get.Response> handler) =>
+        {
+            var result = await handler.Handle(new(), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region GetAll
+
+        app.MapGet("api/v1/user/all", async (
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.AccountContext.UseCases.GetAll.Request,
+                CourseManagerApi.Core.Contexts.AccountContext.UseCases.GetAll.Response> handler) =>
         {
             var result = await handler.Handle(new(), new CancellationToken());
             if (!result.IsSuccess)
