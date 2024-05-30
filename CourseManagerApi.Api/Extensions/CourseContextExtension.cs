@@ -46,6 +46,14 @@ public static class CourseContextExtension
             CourseManagerApi.Infra.Contexts.CourseContext.UseCases.Edit.Repository>();
 
         #endregion
+
+        #region GetAll
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.CourseContext.UseCases.GetAll.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.CourseContext.UseCases.GetAll.Repository>();
+
+        #endregion
     }
 
     public static void MapCourseEndpoints(this WebApplication app)
@@ -133,6 +141,25 @@ public static class CourseContextExtension
         {
             var result = await handler.Handle(request, new CancellationToken());
             return Results.Json(result, statusCode: result.Status);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region GetAll
+
+        app.MapGet("api/v1/courses/all", async (
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.CourseContext.UseCases.GetAll.Request,
+                CourseManagerApi.Core.Contexts.CourseContext.UseCases.GetAll.Response> handler) =>
+        {
+            var result = await handler.Handle(new(), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
         }).RequireAuthorization();
 
         #endregion
