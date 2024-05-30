@@ -22,6 +22,14 @@ public static class ClassContextExtensions
             CourseManagerApi.Infra.Contexts.ClassContext.UseCases.GetAllByNameAndPaged.Repository>();
 
         #endregion
+        
+        #region Get
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.ClassContext.UseCases.Get.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClassContext.UseCases.Get.Repository>();
+
+        #endregion
     }
 
     public static void MapClassEndpoints(this WebApplication app)
@@ -53,6 +61,26 @@ public static class ClassContextExtensions
                 CourseManagerApi.Core.Contexts.ClassContext.UseCases.GetAllByNameAndPaged.Response> handler) =>
         {
             var result = await handler.Handle(new(term, page, pageSize), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region Get
+
+        app.MapGet("api/v1/classes", async (
+            [FromQuery] string id,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.Get.Request,
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.Get.Response> handler) =>
+        {
+            var result = await handler.Handle(new(id), new CancellationToken());
             if (!result.IsSuccess)
                 return Results.Json(result, statusCode: result.Status);
 
