@@ -35,4 +35,6 @@ app.MapClientEndpoints();
 app.MapCourseEndpoints();
 app.MapClassEndpoints();
 
+app.MapGet("/", () => "Hello World!");
+
 app.Run();
