@@ -31,5 +31,12 @@ public class Class : Entity
     public bool IsOnline { get; private set; } = false;
     public Tenant Tenant { get; private set; } = null!;
 
+    public void SetCourse(Course course) => Course = course;
+    public void SetMinister(User minister) => Minister = minister;
+    public void SetName(Name name) => Name = name;
+    public void SetAddressOrLink(string addressOrLink) => AddressOrLink = addressOrLink;
+    public void SetScheduledDate(DateTime scheduledDate) => ScheduledDate = scheduledDate;
+    public void SetIsOnline(bool isOnline) => IsOnline = isOnline;
     public void SetTenant(Tenant tenant) => Tenant = tenant;
+    public void SetNewUpdateAt() => UpdatedAt = DateTime.UtcNow;
 }

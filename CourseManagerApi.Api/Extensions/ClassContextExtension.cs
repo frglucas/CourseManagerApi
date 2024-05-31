@@ -30,6 +30,14 @@ public static class ClassContextExtensions
             CourseManagerApi.Infra.Contexts.ClassContext.UseCases.Get.Repository>();
 
         #endregion
+
+        #region Edit
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.ClassContext.UseCases.Edit.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClassContext.UseCases.Edit.Repository>();
+
+        #endregion
     }
 
     public static void MapClassEndpoints(this WebApplication app)
@@ -88,6 +96,20 @@ public static class ClassContextExtensions
                 return Results.Json(result, statusCode: 500);
 
             return Results.Ok(result);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region Edit
+
+        app.MapPut("api/v1/classes", async (
+            CourseManagerApi.Core.Contexts.ClassContext.UseCases.Edit.Request request,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.Edit.Request,
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.Edit.Response> handler) => 
+        {
+            var result = await handler.Handle(request, new CancellationToken());
+            return Results.Json(result, statusCode: result.Status);
         }).RequireAuthorization();
 
         #endregion
