@@ -54,12 +54,11 @@ public class CourseManagerDbContext : DbContext
 
         modelBuilder.Ignore(typeof(Notification));
 
-        var tenantId = _httpContextAccessor.HttpContext?.User.TenantId();
-        modelBuilder.Entity<Client>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
-        modelBuilder.Entity<Course>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
-        modelBuilder.Entity<Class>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
-        modelBuilder.Entity<Contract>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
-        modelBuilder.Entity<Payment>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
-        modelBuilder.Entity<Installment>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == tenantId);
+        modelBuilder.Entity<Client>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString().ToUpper() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
+        modelBuilder.Entity<Course>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
+        modelBuilder.Entity<Class>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
+        modelBuilder.Entity<Contract>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
+        modelBuilder.Entity<Payment>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
+        modelBuilder.Entity<Installment>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
     }
 }
