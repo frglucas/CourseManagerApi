@@ -11,6 +11,7 @@ builder.AddAccountContext();
 builder.AddClientContext();
 builder.AddCourseContext();
 builder.AddClassContext();
+builder.AddLeadContext();
 
 builder.AddMediator();
 builder.AddCorsPolicy();
@@ -34,6 +35,7 @@ app.MapAccountEndpoints();
 app.MapClientEndpoints();
 app.MapCourseEndpoints();
 app.MapClassEndpoints();
+app.MapLeadEndpoints();
 
 app.MapGet("/", () => "Hello World!");
 

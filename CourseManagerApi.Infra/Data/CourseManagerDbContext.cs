@@ -14,6 +14,8 @@ using CourseManagerApi.Infra.Contexts.ClassContext.Mappings;
 using CourseManagerApi.Infra.Contexts.PaymentContext.Mappings;
 using CourseManagerApi.Core.Contexts.ClassContext.Entities;
 using CourseManagerApi.Core.Contexts.PaymentContext.Entities;
+using CourseManagerApi.Core.Contexts.LeadContext.Entities;
+using CourseManagerApi.Infra.Contexts.LeadContext.Mappings;
 
 namespace CourseManagerApi.Infra.Data;
 
@@ -36,6 +38,7 @@ public class CourseManagerDbContext : DbContext
     public DbSet<Contract> Contracts { get; set; } = null!;
     public DbSet<Payment> Payments { get; set; } = null!;
     public DbSet<Installment> Installments { get; set; } = null!;
+    public DbSet<Lead> Leads { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -51,6 +54,7 @@ public class CourseManagerDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ContractMap());
         modelBuilder.ApplyConfiguration(new PaymentMap());
         modelBuilder.ApplyConfiguration(new InstallmentMap());
+        modelBuilder.ApplyConfiguration(new LeadMap());
 
         modelBuilder.Ignore(typeof(Notification));
 
@@ -60,5 +64,6 @@ public class CourseManagerDbContext : DbContext
         modelBuilder.Entity<Contract>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
         modelBuilder.Entity<Payment>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
         modelBuilder.Entity<Installment>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
+        modelBuilder.Entity<Lead>().HasQueryFilter(x => EF.Property<Guid>(x, "TenantId").ToString() == _httpContextAccessor.HttpContext.User.TenantId().ToString().ToUpper());
     }
 }
