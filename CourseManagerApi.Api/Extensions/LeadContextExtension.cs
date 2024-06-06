@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CourseManagerApi.Api.Extensions;
 
@@ -11,6 +12,14 @@ public static class LeadContextExtensions
         builder.Services.AddTransient<
             CourseManagerApi.Core.Contexts.LeadContext.UseCases.Create.Contracts.IRepository,
             CourseManagerApi.Infra.Contexts.LeadContext.UseCases.Create.Repository>();
+
+        #endregion
+
+        #region GetAllByNameOrEmailAndPaged
+
+        builder.Services.AddScoped<
+            CourseManagerApi.Core.Contexts.LeadContext.UseCases.GetAllByNameOrEmailAndPaged.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.LeadContext.UseCases.GetAllByNameOrEmailAndPaged.Repository>();
 
         #endregion
     }
@@ -29,6 +38,28 @@ public static class LeadContextExtensions
             return result.IsSuccess
                 ? Results.Created($"api/v1/leads/{result.Data?.Id}", result)
                 : Results.Json(result, statusCode: result.Status);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region GetAllByNameOrEmailAndPaged
+
+        app.MapGet("api/v1/leads/paged", async (
+            [FromQuery] string term,
+            [FromQuery] int page,
+            [FromQuery] int pageSize,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.LeadContext.UseCases.GetAllByNameOrEmailAndPaged.Request,
+                CourseManagerApi.Core.Contexts.LeadContext.UseCases.GetAllByNameOrEmailAndPaged.Response> handler) =>
+        {
+            var result = await handler.Handle(new(term, page, pageSize), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
         }).RequireAuthorization();
 
         #endregion

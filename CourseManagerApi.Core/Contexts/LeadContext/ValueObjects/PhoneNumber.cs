@@ -8,6 +8,8 @@ public partial class PhoneNumber : ValueObject
     private const string AreaCodePattern = @"^[1-9]{2}$";
     private const string NumberPattern = @"^(?:[2-8]|9[0-9])[0-9]{3}[0-9]{4}$";
 
+    protected PhoneNumber() {}
+
     public PhoneNumber(string areaCode, string number)
     {
         if (string.IsNullOrEmpty(areaCode))
