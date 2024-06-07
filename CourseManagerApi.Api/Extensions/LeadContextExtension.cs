@@ -22,6 +22,14 @@ public static class LeadContextExtensions
             CourseManagerApi.Infra.Contexts.LeadContext.UseCases.GetAllByNameOrEmailAndPaged.Repository>();
 
         #endregion
+        
+        #region Get
+
+        builder.Services.AddScoped<
+            CourseManagerApi.Core.Contexts.LeadContext.UseCases.Get.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.LeadContext.UseCases.Get.Repository>();
+
+        #endregion
     }
 
     public static void MapLeadEndpoints(this WebApplication app)
@@ -53,6 +61,26 @@ public static class LeadContextExtensions
                 CourseManagerApi.Core.Contexts.LeadContext.UseCases.GetAllByNameOrEmailAndPaged.Response> handler) =>
         {
             var result = await handler.Handle(new(term, page, pageSize), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region Get
+
+        app.MapGet("api/v1/leads", async (
+            [FromQuery] string id,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.LeadContext.UseCases.Get.Request,
+                CourseManagerApi.Core.Contexts.LeadContext.UseCases.Get.Response> handler) =>
+        {
+            var result = await handler.Handle(new(id), new CancellationToken());
             if (!result.IsSuccess)
                 return Results.Json(result, statusCode: result.Status);
 
