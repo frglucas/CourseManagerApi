@@ -30,6 +30,14 @@ public static class LeadContextExtensions
             CourseManagerApi.Infra.Contexts.LeadContext.UseCases.Get.Repository>();
 
         #endregion
+        
+        #region Edit
+
+        builder.Services.AddScoped<
+            CourseManagerApi.Core.Contexts.LeadContext.UseCases.Edit.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.LeadContext.UseCases.Edit.Repository>();
+
+        #endregion
     }
 
     public static void MapLeadEndpoints(this WebApplication app)
@@ -88,6 +96,20 @@ public static class LeadContextExtensions
                 return Results.Json(result, statusCode: 500);
 
             return Results.Ok(result);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region Edit
+
+        app.MapPut("api/v1/leads", async (
+            CourseManagerApi.Core.Contexts.LeadContext.UseCases.Edit.Request request,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.LeadContext.UseCases.Edit.Request,
+                CourseManagerApi.Core.Contexts.LeadContext.UseCases.Edit.Response> handler) => 
+        {
+            var result = await handler.Handle(request, new CancellationToken());
+            return Results.Json(result, statusCode: result.Status);
         }).RequireAuthorization();
 
         #endregion

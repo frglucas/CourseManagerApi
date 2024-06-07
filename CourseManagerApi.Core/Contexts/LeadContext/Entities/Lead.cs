@@ -28,6 +28,11 @@ public class Lead : Entity
     public Tenant Tenant { get; private set; } = null!;
     public bool IsAdhered { get; private set; } = false;
 
+    public void SetName(Name name) => Name = name;
+    public void SetEmail(Email email) => Email = email;
+    public void SetPhoneNumber(PhoneNumber phoneNumber) => PhoneNumber = phoneNumber;
+    public void SetObservation(string observation) => Observation = observation;
+    public void SetNewUpdateAt() => UpdatedAt = DateTime.UtcNow;
     public void SetCreator(User creator)
     {
         if (Creator == null)
