@@ -71,8 +71,12 @@ public class Handler : IRequestHandler<Request, Response>
 
         try
         {
-            phoneNumber = new PhoneNumber(StringUtils.FilterOnlyNumbers(request.AreaCode), StringUtils.FilterOnlyNumbers(request.PhoneNumber));
-            email = new Email(request.Email);
+            if (string.IsNullOrEmpty(request.AreaCode) || string.IsNullOrEmpty(request.PhoneNumber)) phoneNumber = new();
+            else phoneNumber = new PhoneNumber(request.AreaCode, request.PhoneNumber);
+            
+            if (string.IsNullOrEmpty(request.Email)) email = new();
+            else email = new Email(request.Email);
+            
             name = new Name(request.FullName);
 
             lead = new Lead(name, email, phoneNumber, request.Observation);
