@@ -32,6 +32,7 @@ public class Lead : Entity
     public void SetEmail(Email email) => Email = email;
     public void SetPhoneNumber(PhoneNumber phoneNumber) => PhoneNumber = phoneNumber;
     public void SetObservation(string observation) => Observation = observation;
+    public void SetIsAdhered(bool isAdhered) => IsAdhered = isAdhered;
     public void SetNewUpdateAt() => UpdatedAt = DateTime.UtcNow;
     public void SetCreator(User creator)
     {

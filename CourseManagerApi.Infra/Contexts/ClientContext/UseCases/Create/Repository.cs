@@ -1,5 +1,6 @@
 using CourseManagerApi.Core.Contexts.ClientContext.Entities;
 using CourseManagerApi.Core.Contexts.ClientContext.UseCases.Create.Contracts;
+using CourseManagerApi.Core.Contexts.LeadContext.Entities;
 using CourseManagerApi.Core.Contexts.TenantContext.Entities;
 using CourseManagerApi.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,11 @@ public class Repository : IRepository
             .Clients
             .AsNoTracking()
             .AnyAsync(x => x.Email.Address == email, cancellationToken: cancellationToken);
+
+    public async Task<Lead?> FindLeadByIdAsync(string leadId, CancellationToken cancellationToken) => 
+        await _context
+            .Leads
+            .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == leadId.ToUpper(), cancellationToken: cancellationToken);
 
     public async Task<Occupation?> FindOccupationByIdAsync(string occupationId, CancellationToken cancellationToken) =>
         await _context

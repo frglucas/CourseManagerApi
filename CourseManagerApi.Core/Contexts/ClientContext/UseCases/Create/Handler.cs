@@ -1,6 +1,7 @@
 using CourseManagerApi.Core.Contexts.ClientContext.Entities;
 using CourseManagerApi.Core.Contexts.ClientContext.UseCases.Create.Contracts;
 using CourseManagerApi.Core.Contexts.ClientContext.ValueObjects;
+using CourseManagerApi.Core.Contexts.LeadContext.Entities;
 using CourseManagerApi.Core.Contexts.TenantContext.Entities;
 using CourseManagerApi.Core.Utils;
 using CourseManagerApi.Shared.Extensions;
@@ -41,9 +42,17 @@ public class Handler : IRequestHandler<Request, Response>
 
         Occupation? occupation;
         Tenant? tenant;
+        Lead? lead;
 
         try
         {
+            if (!string.IsNullOrEmpty(request.LeadId)) {
+                lead = await _repository.FindLeadByIdAsync(request.LeadId, cancellationToken);
+                if (lead == null)
+                    return new Response("Não encontramos o potencial cliente informado", 404);
+                lead.SetIsAdhered(true);
+            }
+
             occupation = await _repository.FindOccupationByIdAsync(request.OccupationId, cancellationToken);
             if (occupation == null)
                 return new Response("Não encontramos a ocupação profissional informada", 404);

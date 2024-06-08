@@ -12,6 +12,7 @@ public record Request(
     string OccupationId,
     bool IsSmoker,
     EGenderType GenderType,
+    string LeadId = "",
     string BadgeName = "", 
     string Observation = "",
     string GenderDetail = ""
