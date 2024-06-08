@@ -19,14 +19,14 @@ public class LeadMap : IEntityTypeConfiguration<Lead>
             .HasColumnName("Email")
             .HasColumnType("NVARCHAR")
             .HasMaxLength(120)
-            .IsRequired(true);
+            .IsRequired(false);
 
         builder.OwnsOne(x => x.Name)
             .Property(x => x.Value)
             .HasColumnName("Name")
             .HasColumnType("NVARCHAR")
             .HasMaxLength(256)
-            .IsRequired(false);
+            .IsRequired(true);
 
         builder.OwnsOne(x => x.PhoneNumber)
             .Property(x => x.AreaCode)
