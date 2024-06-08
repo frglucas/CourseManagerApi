@@ -7,7 +7,7 @@ public static class StringUtils
     public static string FilterOnlyNumbers(string numberDocument)
     {
         var regex = new Regex(@"[^\d]");
-        var digitsOnly = regex.Replace(numberDocument, "");
+        var digitsOnly = regex.Replace(numberDocument.Trim(), "");
         return digitsOnly;
     }
 

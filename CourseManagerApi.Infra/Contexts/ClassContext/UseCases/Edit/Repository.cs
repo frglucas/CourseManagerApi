@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourseManagerApi.Infra.Contexts.ClassContext.UseCases.Edit;
 
+#pragma warning disable CS8629
 public class Repository : IRepository
 {
     private readonly CourseManagerDbContext _context;
