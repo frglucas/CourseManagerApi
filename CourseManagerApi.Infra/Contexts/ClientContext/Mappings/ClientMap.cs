@@ -92,6 +92,21 @@ public class ClientMap : IEntityTypeConfiguration<Client>
         builder.Property(x => x.IsActive)
             .HasColumnName("IsActive")
             .IsRequired(true);
+        
+        builder.HasOne(x => x.Creator)
+            .WithMany()
+            .OnDelete(DeleteBehavior.ClientCascade)
+            .IsRequired(true);
+        
+        builder.HasOne(x => x.Captivator)
+            .WithMany()
+            .OnDelete(DeleteBehavior.ClientCascade)
+            .IsRequired(true);
+        
+        builder.HasOne(x => x.Indicator)
+            .WithMany()
+            .OnDelete(DeleteBehavior.ClientSetNull)
+            .IsRequired(false);
 
         builder.HasOne(x => x.Occupation)
             .WithMany()

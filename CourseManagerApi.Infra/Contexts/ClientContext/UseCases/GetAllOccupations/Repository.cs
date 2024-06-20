@@ -11,7 +11,7 @@ public class Repository : IRepository
 
     public Repository(CourseManagerDbContext context) => _context = context;
 
-    public async Task<IEnumerable<Occupation>> GetAllOccupations(string term, CancellationToken cancellationToken) => 
+    public async Task<IEnumerable<Occupation>> GetAllOccupationsAsync(string term, CancellationToken cancellationToken) => 
         await _context
             .Occupations
             .AsNoTracking()

@@ -1,3 +1,4 @@
+using CourseManagerApi.Core.Contexts.AccountContext.Entities;
 using CourseManagerApi.Core.Contexts.ClientContext.Entities;
 using CourseManagerApi.Core.Contexts.ClientContext.UseCases.Create.Contracts;
 using CourseManagerApi.Core.Contexts.LeadContext.Entities;
@@ -24,6 +25,21 @@ public class Repository : IRepository
             .Clients
             .AsNoTracking()
             .AnyAsync(x => x.Email.Address == email, cancellationToken: cancellationToken);
+
+    public async Task<User?> FindCaptivatorByIdAsync(string captivatorId, CancellationToken cancellationToken) =>
+        await _context
+            .Users
+            .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == captivatorId.ToUpper(), cancellationToken: cancellationToken);
+
+    public async Task<User?> FindCreatorByIdAsync(string creatorId, CancellationToken cancellationToken) =>
+        await _context
+            .Users
+            .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == creatorId.ToUpper(), cancellationToken: cancellationToken);
+
+    public async Task<Client?> FindIndicatorByIdAsync(string indicatorId, CancellationToken cancellationToken) =>
+        await _context
+            .Clients
+            .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == indicatorId.ToUpper(), cancellationToken: cancellationToken);
 
     public async Task<Lead?> FindLeadByIdAsync(string leadId, CancellationToken cancellationToken) => 
         await _context

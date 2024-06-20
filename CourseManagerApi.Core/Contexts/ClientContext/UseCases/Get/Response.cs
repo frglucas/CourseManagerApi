@@ -31,10 +31,14 @@ public record ResponseData(
     DateTime BirthDate,
     EDocumentType DocumentType,
     string Document,
-    string OccupationId,
+    string? OccupationId,
     EGenderType GenderType,
     string GenderDetails,
     bool IsSmoker, 
     bool IsActive,
-    string Observation
+    string Observation,
+    string CreatorId,
+    string CaptivatorId,
+    string IndicatorId,
+    bool IndicatorIsCaptivator
 );

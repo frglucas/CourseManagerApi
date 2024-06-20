@@ -56,12 +56,16 @@ public class Handler : IRequestHandler<Request, Response>
                 client.BirthDate,
                 client.Document.Type,
                 client.Document.Number,
-                client.Occupation.Id.ToString(),
+                (client.Occupation == null) ? null : client.Occupation.Id.ToString(),
                 client.Gender.Type,
                 client.Gender.Detail,
                 client.IsSmoker,
                 client.IsActive,
-                client.Observation
+                client.Observation,
+                client.Creator.Id.ToString(),
+                client.Captivator.Id.ToString(),
+                (client.Indicator == null) ? "" : client.Indicator.Id.ToString(),
+                client.Indicator == null
             );
 
             return new Response(string.Empty, data);

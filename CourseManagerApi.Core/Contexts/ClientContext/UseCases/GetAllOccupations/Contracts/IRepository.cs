@@ -4,5 +4,5 @@ namespace CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupation
 
 public interface IRepository
 {
-    Task<IEnumerable<Occupation>> GetAllOccupations(string term, CancellationToken cancellationToken);
+    Task<IEnumerable<Occupation>> GetAllOccupationsAsync(string term, CancellationToken cancellationToken);
 }

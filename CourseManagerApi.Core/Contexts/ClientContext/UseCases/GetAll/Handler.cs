@@ -1,26 +1,23 @@
 using CourseManagerApi.Core.Contexts.ClientContext.Entities;
-using CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations.Contracts;
+using CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAll.Contracts;
 using MediatR;
 
-namespace CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAllOccupations;
+namespace CourseManagerApi.Core.Contexts.ClientContext.UseCases.GetAll;
 
 public class Handler : IRequestHandler<Request, Response>
 {
     private readonly IRepository _repository;
 
-    public Handler(IRepository repository)
-    {
-        _repository = repository;
-    }
+    public Handler(IRepository repository) => _repository = repository;
 
     public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
     {
         #region 01. Recupera valores
 
-        IEnumerable<Occupation> occupations;
+        IEnumerable<Client> clients;
         try
         {
-            occupations = await _repository.GetAllOccupationsAsync(request.term, cancellationToken);
+            clients = await _repository.GetAllClientsAsync(cancellationToken);
         }
         catch
         {
@@ -33,11 +30,12 @@ public class Handler : IRequestHandler<Request, Response>
 
         try
         {
-            var data = occupations.Select(occupation => {
+            var data = clients.Select(client => {
                 return new ResponseData
                 {
-                    Id = occupation.Id.ToString(),
-                    Description = occupation.Description
+                    Id = client.Id.ToString(),
+                    Name = client.Name,
+                    Email = client.Email
                 };
             });
 
@@ -45,7 +43,7 @@ public class Handler : IRequestHandler<Request, Response>
         }
         catch
         {
-            return new Response("Não foi possível obter os dados do perfil", 500);
+            return new Response("Não foi possível obter os dados", 500);
         }
 
         #endregion

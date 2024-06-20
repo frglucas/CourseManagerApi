@@ -1,3 +1,4 @@
+using CourseManagerApi.Core.Contexts.AccountContext.Entities;
 using CourseManagerApi.Core.Contexts.ClientContext.Entities;
 using CourseManagerApi.Core.Contexts.ClientContext.UseCases.Create.Contracts;
 using CourseManagerApi.Core.Contexts.ClientContext.ValueObjects;
@@ -43,6 +44,9 @@ public class Handler : IRequestHandler<Request, Response>
         Occupation? occupation;
         Tenant? tenant;
         Lead? lead;
+        User? creator;
+        User? captivator;
+        Client? indicator;
 
         try
         {
@@ -53,14 +57,34 @@ public class Handler : IRequestHandler<Request, Response>
                 lead.SetIsAdhered(true);
             }
 
-            occupation = await _repository.FindOccupationByIdAsync(request.OccupationId, cancellationToken);
-            if (occupation == null)
-                return new Response("Não encontramos a ocupação profissional informada", 404);
+            if (request.OccupationId == null) occupation = null;
+            else {
+                occupation = await _repository.FindOccupationByIdAsync(request.OccupationId, cancellationToken);
+                if (occupation == null)
+                    return new Response("Não encontramos a ocupação profissional informada", 404);
+            }
 
             var tenantId = _contextAccessor.HttpContext.User.TenantId();
             tenant = await _repository.FindTenantByIdAsync(tenantId, cancellationToken);
             if (tenant == null)
                 return new Response("Não foi possível encontrar o tenant", 404);
+
+            var creatorId = _contextAccessor.HttpContext.User.Id();
+            creator = await _repository.FindCreatorByIdAsync(creatorId, cancellationToken);
+            if (creator == null)
+                return new Response("Não foi possível encontrar o criador", 404);
+
+            captivator = await _repository.FindCaptivatorByIdAsync(request.CaptivatorId, cancellationToken);
+            if (captivator == null)
+                return new Response("Não foi possível encontrar o captador", 404);
+
+            if (request.IndicatorIsCaptivator) indicator = null;
+            else 
+            {
+                indicator = await _repository.FindIndicatorByIdAsync(request.IndicatorId, cancellationToken);
+                if (indicator == null)
+                    return new Response("Não foi possível encontrar o indicador", 404);
+            }
         }
         catch
         {
@@ -87,7 +111,16 @@ public class Handler : IRequestHandler<Request, Response>
                 name = new Name(request.FullName, request.FullName.Split(" ").First());
             else name = new Name(request.FullName, request.BadgeName);
 
-            client = new Client(email, name, document, gender, request.BirthDate, occupation, request.Observation, request.IsSmoker);
+            DateTime birthDate = DateTime.MinValue;
+
+            if (request.DocumentType == Enums.EDocumentType.CPF)
+                birthDate = request.BirthDate;
+
+            client = new Client(email, name, document, gender, birthDate, request.Observation, request.IsSmoker, creator, captivator);
+            if (indicator != null)
+                client.SetIndicator(indicator);
+            
+            client.SetOccupation(occupation);
             client.SetTenant(tenant);
         }
         catch (Exception ex)
