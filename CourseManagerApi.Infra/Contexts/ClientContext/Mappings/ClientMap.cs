@@ -74,7 +74,7 @@ public class ClientMap : IEntityTypeConfiguration<Client>
         builder.Property(x => x.Observation)
             .HasColumnName("Observation")
             .HasColumnType("NVARCHAR")
-            .HasMaxLength(256)
+            .HasMaxLength(512)
             .IsRequired(false);
         
         builder.Property(x => x.CreatedAt)

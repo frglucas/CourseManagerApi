@@ -14,9 +14,12 @@ public record Request(
     EGenderType GenderType,
     string CaptivatorId,
     bool IndicatorIsCaptivator,
+    List<PhoneNumberRequest> phoneNumbers,
     string IndicatorId = "",
     string LeadId = "",
     string BadgeName = "", 
     string Observation = "",
     string GenderDetail = ""
 ) : IRequest<Response>;
+
+public record PhoneNumberRequest(string AreaCode, string PhoneNumber);

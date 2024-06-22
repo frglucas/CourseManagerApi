@@ -44,6 +44,7 @@ public class Client : Entity
 
     public void AddAddress(Address address) => Addresses.Add(address);
     public void AddPhoneNumber(PhoneNumber phoneNumber) => PhoneNumbers.Add(phoneNumber);
+    public void AddPhoneNumbers(List<PhoneNumber> phoneNumbers) => PhoneNumbers.AddRange(phoneNumbers);
     public void SetTenant(Tenant tenant)
     {
         if (Tenant == null)

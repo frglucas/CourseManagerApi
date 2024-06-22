@@ -29,6 +29,10 @@ public class Handler : IRequestHandler<Request, Response>
         try
         {
             var res = Specification.Ensure(request);
+            
+            if (request.phoneNumbers != null)
+                request.phoneNumbers.ForEach(x => res.EnsurePhoneNumbers(x));
+            
             if (!res.IsValid)
                 return new Response("Requisição inválida", 400, res.Notifications);
         }
@@ -100,6 +104,7 @@ public class Handler : IRequestHandler<Request, Response>
         Gender gender;
         Name name;
         Client client;
+        List<PhoneNumber> phoneNumbers;
 
         try
         {
@@ -119,6 +124,13 @@ public class Handler : IRequestHandler<Request, Response>
             client = new Client(email, name, document, gender, birthDate, request.Observation, request.IsSmoker, creator, captivator);
             if (indicator != null)
                 client.SetIndicator(indicator);
+
+            if (request.phoneNumbers != null)
+            {
+                phoneNumbers = request.phoneNumbers.Select(x => new PhoneNumber(x.PhoneNumber, x.AreaCode)).ToList();
+                phoneNumbers.ForEach(x => x.SetClient(client));
+                client.AddPhoneNumbers(phoneNumbers);
+            }
             
             client.SetOccupation(occupation);
             client.SetTenant(tenant);
