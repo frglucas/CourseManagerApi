@@ -29,6 +29,6 @@ public record ResponseData(
     string AreaCode,
     string PhoneNumber,
     string Observation,
-    string CreatorName,
+    string CreatorId,
     bool IsAdhered
 );

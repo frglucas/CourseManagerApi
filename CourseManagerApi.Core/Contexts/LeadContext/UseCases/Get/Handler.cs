@@ -55,7 +55,7 @@ public class Handler : IRequestHandler<Request, Response>
                 lead.PhoneNumber.AreaCode,
                 lead.PhoneNumber.Number,
                 lead.Observation,
-                lead.Creator.Name,
+                lead.Creator.Id.ToString(),
                 lead.IsAdhered
             );
 

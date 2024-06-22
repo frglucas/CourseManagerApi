@@ -13,6 +13,9 @@ public record Request(
     string OccupationId,
     bool IsSmoker,
     EGenderType GenderType,
+    string CaptivatorId,
+    bool IndicatorIsCaptivator,
+    string IndicatorId = "",
     string BadgeName = "",
     string Observation = "",
     string GenderDetail = ""

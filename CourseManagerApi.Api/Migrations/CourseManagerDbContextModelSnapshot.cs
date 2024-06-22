@@ -211,9 +211,18 @@ namespace CourseManagerApi.Api.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("BirthDate");
 
+                    b.Property<Guid>("CaptivatorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("CreatedAt");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("IndicatorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit")
@@ -224,7 +233,7 @@ namespace CourseManagerApi.Api.Migrations
                         .HasColumnName("IsSmoker");
 
                     b.Property<string>("Observation")
-                        .HasMaxLength(256)
+                        .HasMaxLength(512)
                         .HasColumnType("NVARCHAR")
                         .HasColumnName("Observation");
 
@@ -240,6 +249,12 @@ namespace CourseManagerApi.Api.Migrations
                         .HasColumnName("UpdatedAt");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CaptivatorId");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("IndicatorId");
 
                     b.HasIndex("OccupationId");
 
@@ -276,12 +291,18 @@ namespace CourseManagerApi.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AreaCode")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("NVARCHAR")
+                        .HasColumnName("AreaCode");
+
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasMaxLength(11)
+                        .HasMaxLength(9)
                         .HasColumnType("NVARCHAR")
                         .HasColumnName("Number");
 
@@ -673,6 +694,22 @@ namespace CourseManagerApi.Api.Migrations
 
             modelBuilder.Entity("CourseManagerApi.Core.Contexts.ClientContext.Entities.Client", b =>
                 {
+                    b.HasOne("CourseManagerApi.Core.Contexts.AccountContext.Entities.User", "Captivator")
+                        .WithMany()
+                        .HasForeignKey("CaptivatorId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("CourseManagerApi.Core.Contexts.AccountContext.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("CourseManagerApi.Core.Contexts.ClientContext.Entities.Client", "Indicator")
+                        .WithMany()
+                        .HasForeignKey("IndicatorId");
+
                     b.HasOne("CourseManagerApi.Core.Contexts.ClientContext.Entities.Occupation", "Occupation")
                         .WithMany()
                         .HasForeignKey("OccupationId")
@@ -782,6 +819,10 @@ namespace CourseManagerApi.Api.Migrations
                                 .HasForeignKey("ClientId");
                         });
 
+                    b.Navigation("Captivator");
+
+                    b.Navigation("Creator");
+
                     b.Navigation("Document")
                         .IsRequired();
 
@@ -790,6 +831,8 @@ namespace CourseManagerApi.Api.Migrations
 
                     b.Navigation("Gender")
                         .IsRequired();
+
+                    b.Navigation("Indicator");
 
                     b.Navigation("Name")
                         .IsRequired();

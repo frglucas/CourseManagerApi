@@ -12,10 +12,16 @@ public class PhoneNumberMap : IEntityTypeConfiguration<PhoneNumber>
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.AreaCode)
+            .HasColumnName("AreaCode")
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(2)
+            .IsRequired(true);
+
         builder.Property(x => x.Number)
             .HasColumnName("Number")
             .HasColumnType("NVARCHAR")
-            .HasMaxLength(11)
+            .HasMaxLength(9)
             .IsRequired(true);
 
         builder.HasOne(x => x.Client)

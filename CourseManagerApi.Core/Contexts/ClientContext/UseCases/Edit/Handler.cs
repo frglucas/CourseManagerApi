@@ -1,3 +1,4 @@
+using CourseManagerApi.Core.Contexts.AccountContext.Entities;
 using CourseManagerApi.Core.Contexts.ClientContext.Entities;
 using CourseManagerApi.Core.Contexts.ClientContext.UseCases.Edit.Contracts;
 using CourseManagerApi.Core.Contexts.ClientContext.ValueObjects;
@@ -32,6 +33,8 @@ public class Handler : IRequestHandler<Request, Response>
 
         Client? client;
         Occupation? occupation;
+        User? captivator;
+        Client? indicator;
 
         try
         {
@@ -39,9 +42,24 @@ public class Handler : IRequestHandler<Request, Response>
             if (client == null)
                 return new Response("Não encontramos o cliente especificado", 404);
 
-            occupation = await _repository.FindOccupationByIdAsync(request.OccupationId, cancellationToken);
-            if (occupation == null)
-                return new Response("Não encontramos a ocupação profissional informada", 404);
+            if (request.OccupationId == null) occupation = null;
+            else {
+                occupation = await _repository.FindOccupationByIdAsync(request.OccupationId, cancellationToken);
+                if (occupation == null)
+                    return new Response("Não encontramos a ocupação profissional informada", 404);
+            }
+
+            captivator = await _repository.FindCaptivatorByIdAsync(request.CaptivatorId, cancellationToken);
+            if (captivator == null)
+                return new Response("Não foi possível encontrar o captador", 404);
+
+            if (request.IndicatorIsCaptivator) indicator = null;
+            else 
+            {
+                indicator = await _repository.FindIndicatorByIdAsync(request.IndicatorId, cancellationToken);
+                if (indicator == null)
+                    return new Response("Não foi possível encontrar o indicador", 404);
+            }
         }
         catch
         {
@@ -56,6 +74,7 @@ public class Handler : IRequestHandler<Request, Response>
         Email email;
         Gender gender;
         Name name;
+        DateTime birthDate;
 
         try
         {
@@ -66,6 +85,10 @@ public class Handler : IRequestHandler<Request, Response>
             if (string.IsNullOrEmpty(request.BadgeName) || string.IsNullOrWhiteSpace(request.BadgeName))
                 name = new Name(request.FullName, request.FullName.Split(" ").First());
             else name = new Name(request.FullName, request.BadgeName);
+
+            if (request.DocumentType == Enums.EDocumentType.CPF)
+                birthDate = request.BirthDate;
+            else birthDate = DateTime.MinValue;
         }
         catch (Exception ex)
         {
@@ -106,6 +129,8 @@ public class Handler : IRequestHandler<Request, Response>
             client.SetGender(gender);
             client.SetObservation(request.Observation);
             client.SetNewUpdateAt();
+            client.SetCaptivator(captivator);
+            client.SetIndicator(indicator);
         }
         catch
         {

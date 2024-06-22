@@ -15,7 +15,7 @@ namespace CourseManagerApi.Api.Migrations
                 name: "Occupation",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Code = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false)
                 },
@@ -46,45 +46,6 @@ namespace CourseManagerApi.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tenant", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Client",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Email = table.Column<string>(type: "NVARCHAR(120)", maxLength: 120, nullable: false),
-                    FullName = table.Column<string>(type: "NVARCHAR(256)", maxLength: 256, nullable: false),
-                    BadgeName = table.Column<string>(type: "NVARCHAR(256)", maxLength: 256, nullable: false),
-                    DocumentNumber = table.Column<string>(type: "NVARCHAR(14)", maxLength: 14, nullable: false),
-                    HashedDocumentNumber = table.Column<string>(type: "NVARCHAR(256)", maxLength: 256, nullable: false),
-                    DocumentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GenderType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GenderDetail = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OccupationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Observation = table.Column<string>(type: "NVARCHAR(256)", maxLength: 256, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsSmoker = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Client", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Client_Occupation_OccupationId",
-                        column: x => x.OccupationId,
-                        principalTable: "Occupation",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Client_Tenant_TenantId",
-                        column: x => x.TenantId,
-                        principalTable: "Tenant",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,51 +97,6 @@ namespace CourseManagerApi.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Address",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Street = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
-                    AddressNumber = table.Column<string>(type: "NVARCHAR(10)", maxLength: 10, nullable: false),
-                    Neighborhood = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
-                    City = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
-                    State = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
-                    Country = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
-                    ZipCode = table.Column<string>(type: "NVARCHAR(8)", maxLength: 8, nullable: true),
-                    AddOnAddress = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: true),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Address", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Address_Client_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Client",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PhoneNumber",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<string>(type: "NVARCHAR(11)", maxLength: 11, nullable: false),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PhoneNumber", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PhoneNumber_Client_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Client",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Class",
                 columns: table => new
                 {
@@ -217,6 +133,95 @@ namespace CourseManagerApi.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Client",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Email = table.Column<string>(type: "NVARCHAR(120)", maxLength: 120, nullable: false),
+                    FullName = table.Column<string>(type: "NVARCHAR(256)", maxLength: 256, nullable: false),
+                    BadgeName = table.Column<string>(type: "NVARCHAR(256)", maxLength: 256, nullable: false),
+                    DocumentNumber = table.Column<string>(type: "NVARCHAR(14)", maxLength: 14, nullable: false),
+                    HashedDocumentNumber = table.Column<string>(type: "NVARCHAR(256)", maxLength: 256, nullable: false),
+                    DocumentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GenderType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GenderDetail = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OccupationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Observation = table.Column<string>(type: "NVARCHAR(512)", maxLength: 512, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsSmoker = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CaptivatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IndicatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Client", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Client_Client_IndicatorId",
+                        column: x => x.IndicatorId,
+                        principalTable: "Client",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Client_Occupation_OccupationId",
+                        column: x => x.OccupationId,
+                        principalTable: "Occupation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Client_Tenant_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Client_User_CaptivatorId",
+                        column: x => x.CaptivatorId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Client_User_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Lead",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    Name = table.Column<string>(type: "NVARCHAR(256)", maxLength: 256, nullable: false),
+                    Email = table.Column<string>(type: "NVARCHAR(120)", maxLength: 120, nullable: true),
+                    AreaCode = table.Column<string>(type: "NVARCHAR(2)", maxLength: 2, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "NVARCHAR(9)", maxLength: 9, nullable: true),
+                    Observation = table.Column<string>(type: "NVARCHAR(512)", maxLength: 512, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsAdhered = table.Column<bool>(type: "bit", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lead", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Lead_Tenant_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Lead_User_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRole",
                 columns: table => new
                 {
@@ -236,6 +241,32 @@ namespace CourseManagerApi.Api.Migrations
                         name: "FK_UserRole_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Street = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
+                    AddressNumber = table.Column<string>(type: "NVARCHAR(10)", maxLength: 10, nullable: false),
+                    Neighborhood = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
+                    City = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
+                    State = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
+                    Country = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
+                    ZipCode = table.Column<string>(type: "NVARCHAR(8)", maxLength: 8, nullable: true),
+                    AddOnAddress = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: true),
+                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Address_Client_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Client",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -268,6 +299,26 @@ namespace CourseManagerApi.Api.Migrations
                         name: "FK_Contract_Tenant_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PhoneNumber",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Number = table.Column<string>(type: "NVARCHAR(9)", maxLength: 9, nullable: false),
+                    AreaCode = table.Column<string>(type: "NVARCHAR(2)", maxLength: 2, nullable: false),
+                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhoneNumber", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PhoneNumber_Client_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Client",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -349,6 +400,21 @@ namespace CourseManagerApi.Api.Migrations
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Client_CaptivatorId",
+                table: "Client",
+                column: "CaptivatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Client_CreatorId",
+                table: "Client",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Client_IndicatorId",
+                table: "Client",
+                column: "IndicatorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Client_OccupationId",
                 table: "Client",
                 column: "OccupationId");
@@ -389,6 +455,16 @@ namespace CourseManagerApi.Api.Migrations
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Lead_CreatorId",
+                table: "Lead",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Lead_TenantId",
+                table: "Lead",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payment_ContractId",
                 table: "Payment",
                 column: "ContractId",
@@ -425,6 +501,9 @@ namespace CourseManagerApi.Api.Migrations
                 name: "Installment");
 
             migrationBuilder.DropTable(
+                name: "Lead");
+
+            migrationBuilder.DropTable(
                 name: "PhoneNumber");
 
             migrationBuilder.DropTable(
@@ -449,10 +528,10 @@ namespace CourseManagerApi.Api.Migrations
                 name: "Course");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Occupation");
 
             migrationBuilder.DropTable(
-                name: "Occupation");
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Tenant");

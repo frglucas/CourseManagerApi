@@ -16,5 +16,8 @@ public class Repository : IRepository
             .Clients
             .AsNoTracking()
             .Include(x => x.Occupation)
+            .Include(x => x.Creator)
+            .Include(x => x.Captivator)
+            .Include(x => x.Indicator)
             .FirstOrDefaultAsync(x => x.Id.ToString().ToUpper() == id.ToUpper(), cancellationToken);
 }
