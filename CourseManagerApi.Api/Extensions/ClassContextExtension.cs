@@ -38,6 +38,14 @@ public static class ClassContextExtensions
             CourseManagerApi.Infra.Contexts.ClassContext.UseCases.Edit.Repository>();
 
         #endregion
+
+        #region AddClient
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.ClassContext.UseCases.AddClient.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClassContext.UseCases.AddClient.Repository>();
+
+        #endregion
     }
 
     public static void MapClassEndpoints(this WebApplication app)
@@ -107,6 +115,20 @@ public static class ClassContextExtensions
             IRequestHandler<
                 CourseManagerApi.Core.Contexts.ClassContext.UseCases.Edit.Request,
                 CourseManagerApi.Core.Contexts.ClassContext.UseCases.Edit.Response> handler) => 
+        {
+            var result = await handler.Handle(request, new CancellationToken());
+            return Results.Json(result, statusCode: result.Status);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region AddClient
+
+        app.MapPost("api/v1/classes/add-clients", async (
+            CourseManagerApi.Core.Contexts.ClassContext.UseCases.AddClient.Request request,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.AddClient.Request,
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.AddClient.Response> handler) => 
         {
             var result = await handler.Handle(request, new CancellationToken());
             return Results.Json(result, statusCode: result.Status);

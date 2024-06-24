@@ -25,4 +25,10 @@ public class Payment : Entity
     public Contract Contract { get; private set; } = null!;
     public Tenant Tenant { get; private set; } = null!;
     public List<Installment> Installments { get; private set; } = new();
+
+    public void SetContract(Contract contract) => Contract = contract;
+
+    public void SetTenant(Tenant tenant) => Tenant = tenant;
+
+    public void SumTotalPrince(decimal Money) => TotalPrice += Money;
 }

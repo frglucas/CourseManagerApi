@@ -7,12 +7,11 @@ namespace CourseManagerApi.Core.Contexts.PaymentContext.Entities;
 public class Installment : Entity
 {
     public Installment() { }
-    public Installment(decimal money, DateTime dueDate, Payment payment)
+    public Installment(decimal money, DateTime dueDate)
     {
         Money = money;
         DueDate = dueDate;
         PaymentStatus = EPaymentStatus.NotPaid;
-        Payment = payment;
     }
 
     public decimal Money { get; private set; } = Decimal.Zero;
@@ -20,4 +19,8 @@ public class Installment : Entity
     public EPaymentStatus PaymentStatus { get; private set; } = EPaymentStatus.NotPaid;
     public Payment Payment { get; private set; } = null!;
     public Tenant Tenant { get; private set; } = null!;
+
+    public void SetPayment(Payment payment) => Payment = payment;
+
+    public void SetTenant(Tenant tenant) => Tenant = tenant;  
 }
