@@ -25,7 +25,7 @@ public class Lead : Entity
     public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
     public User Creator { get; private set; } = null!;
     public Guid CreatorId { get; private set; } = Guid.Empty;
-    public Tenant Tenant { get; private set; } = null!;
+    public Tenant? Tenant { get; private set; } = null!;
     public bool IsAdhered { get; private set; } = false;
 
     public void SetName(Name name) => Name = name;

@@ -21,7 +21,7 @@ public class Course : Entity
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
     public bool IsActive { get; private set; } = true;
-    public Tenant Tenant { get; private set; } = null!;
+    public Tenant? Tenant { get; private set; } = null!;
 
     public void SetTenant(Tenant tenant)
     {

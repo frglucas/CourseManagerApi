@@ -71,7 +71,7 @@ public class LeadMap : IEntityTypeConfiguration<Lead>
         builder.HasOne(x => x.Tenant)
             .WithMany()
             .HasForeignKey(x => x.TenantId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired(true);
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
     }
 }

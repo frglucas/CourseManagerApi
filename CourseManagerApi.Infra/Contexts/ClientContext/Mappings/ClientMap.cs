@@ -110,7 +110,7 @@ public class ClientMap : IEntityTypeConfiguration<Client>
 
         builder.HasOne(x => x.Occupation)
             .WithMany()
-            .OnDelete(DeleteBehavior.Cascade)
+            .OnDelete(DeleteBehavior.SetNull)
             .IsRequired(false);
 
         builder.HasMany(x => x.Addresses)
@@ -120,7 +120,7 @@ public class ClientMap : IEntityTypeConfiguration<Client>
         builder.HasOne(x => x.Tenant)
             .WithMany()
             .HasForeignKey(x => x.TenantId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired(true);
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
     }
 }

@@ -26,16 +26,21 @@ public class InstallmentMap : IEntityTypeConfiguration<Installment>
             .HasColumnName("PaymentStatus")
             .HasConversion(x => x.ToString(), x => (EPaymentStatus)Enum.Parse(typeof(EPaymentStatus), x))
             .IsRequired(true);
+        
+        builder.Property(x => x.PaymentMethod)
+            .HasColumnName("PaymentMethod")
+            .HasConversion(x => x.ToString(), x => (EPaymentMethod)Enum.Parse(typeof(EPaymentMethod), x))
+            .IsRequired(true);
 
         builder.HasOne(x => x.Payment)
             .WithMany(x => x.Installments)
-            .OnDelete(DeleteBehavior.ClientCascade)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired(true);
 
         builder.HasOne(x => x.Tenant)
             .WithMany()
             .HasForeignKey(x => x.TenantId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired(true);
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
     }
 }

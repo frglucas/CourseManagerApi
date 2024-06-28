@@ -76,7 +76,7 @@ public class UserMap : IEntityTypeConfiguration<User>
         builder.HasOne(x => x.Tenant)
             .WithMany()
             .HasForeignKey(x => x.TenantId)
-            .OnDelete(DeleteBehavior.Cascade)
+            .OnDelete(DeleteBehavior.SetNull)
             .IsRequired(false);
     }
 }

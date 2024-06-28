@@ -86,7 +86,6 @@ namespace CourseManagerApi.Api.Migrations
                         .HasColumnName("ScheduledDate");
 
                     b.Property<Guid?>("TenantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -120,8 +119,10 @@ namespace CourseManagerApi.Api.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("CreatedAt");
 
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("TenantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -241,7 +242,6 @@ namespace CourseManagerApi.Api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("TenantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -328,7 +328,6 @@ namespace CourseManagerApi.Api.Migrations
                         .HasColumnName("IsActive");
 
                     b.Property<Guid?>("TenantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -368,7 +367,6 @@ namespace CourseManagerApi.Api.Migrations
                         .HasColumnName("Observation");
 
                     b.Property<Guid?>("TenantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -403,13 +401,17 @@ namespace CourseManagerApi.Api.Migrations
                     b.Property<Guid>("PaymentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("PaymentMethod");
+
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("PaymentStatus");
 
                     b.Property<Guid?>("TenantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -444,7 +446,6 @@ namespace CourseManagerApi.Api.Migrations
                         .HasColumnName("PaymentStatus");
 
                     b.Property<Guid?>("TenantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalPrice")
@@ -502,7 +503,7 @@ namespace CourseManagerApi.Api.Migrations
                     b.HasOne("CourseManagerApi.Core.Contexts.TenantContext.Entities.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsOne("CourseManagerApi.Core.Contexts.AccountContext.ValueObjects.Email", "Email", b1 =>
                         {
@@ -623,8 +624,7 @@ namespace CourseManagerApi.Api.Migrations
                     b.HasOne("CourseManagerApi.Core.Contexts.TenantContext.Entities.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsOne("CourseManagerApi.Core.Contexts.ClassContext.ValueObjects.Name", "Name", b1 =>
                         {
@@ -672,8 +672,7 @@ namespace CourseManagerApi.Api.Migrations
                     b.HasOne("CourseManagerApi.Core.Contexts.TenantContext.Entities.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Class");
 
@@ -713,13 +712,12 @@ namespace CourseManagerApi.Api.Migrations
                     b.HasOne("CourseManagerApi.Core.Contexts.ClientContext.Entities.Occupation", "Occupation")
                         .WithMany()
                         .HasForeignKey("OccupationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("CourseManagerApi.Core.Contexts.TenantContext.Entities.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsOne("CourseManagerApi.Core.Contexts.ClientContext.ValueObjects.Document", "Document", b1 =>
                         {
@@ -857,8 +855,7 @@ namespace CourseManagerApi.Api.Migrations
                     b.HasOne("CourseManagerApi.Core.Contexts.TenantContext.Entities.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsOne("CourseManagerApi.Core.Contexts.CourseContext.ValueObjects.Description", "Description", b1 =>
                         {
@@ -918,8 +915,7 @@ namespace CourseManagerApi.Api.Migrations
                     b.HasOne("CourseManagerApi.Core.Contexts.TenantContext.Entities.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsOne("CourseManagerApi.Core.Contexts.LeadContext.ValueObjects.Email", "Email", b1 =>
                         {
@@ -1003,14 +999,13 @@ namespace CourseManagerApi.Api.Migrations
                     b.HasOne("CourseManagerApi.Core.Contexts.PaymentContext.Entities.Payment", "Payment")
                         .WithMany("Installments")
                         .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CourseManagerApi.Core.Contexts.TenantContext.Entities.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Payment");
 
@@ -1022,14 +1017,13 @@ namespace CourseManagerApi.Api.Migrations
                     b.HasOne("CourseManagerApi.Core.Contexts.ClassContext.Entities.Contract", "Contract")
                         .WithOne("Payment")
                         .HasForeignKey("CourseManagerApi.Core.Contexts.PaymentContext.Entities.Payment", "ContractId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CourseManagerApi.Core.Contexts.TenantContext.Entities.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Contract");
 

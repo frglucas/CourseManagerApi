@@ -29,7 +29,7 @@ public class Class : Entity
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
     public bool IsOnline { get; private set; } = false;
-    public Tenant Tenant { get; private set; } = null!;
+    public Tenant? Tenant { get; private set; } = null!;
 
     public void SetCourse(Course course) => Course = course;
     public void SetMinister(User minister) => Minister = minister;

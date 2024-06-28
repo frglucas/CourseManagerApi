@@ -27,7 +27,7 @@ public class User : Entity
     public Email Email { get; private set; } = null!;
     public Password Password { get; private set; } = null!;
     public List<Role> Roles { get; set; } = new();
-    public Tenant Tenant { get; private set; } = null!;
+    public Tenant? Tenant { get; private set; } = null!;
 
     public void UpdatePassword(string plainTextPassword, string code)
     {
