@@ -1,3 +1,4 @@
+using CourseManagerApi.Core.Contexts.ClassContext.Entities;
 using CourseManagerApi.Core.Contexts.PaymentContext.Entities;
 using CourseManagerApi.Core.Contexts.PaymentContext.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -37,19 +38,18 @@ public class PaymentMap : IEntityTypeConfiguration<Payment>
 
         builder.HasOne(x => x.Contract)
             .WithOne(x => x.Payment)
-            .HasForeignKey<Payment>("ContractId")
-            .OnDelete(DeleteBehavior.ClientCascade)
+            .HasForeignKey<Payment>(x => x.ContractId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder.HasMany(x => x.Installments)
             .WithOne(x => x.Payment)
-            .OnDelete(DeleteBehavior.ClientCascade)
             .IsRequired(true);
 
         builder.HasOne(x => x.Tenant)
             .WithMany()
             .HasForeignKey(x => x.TenantId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired(true);
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
     }
 }

@@ -1,6 +1,7 @@
 using CourseManagerApi.Core.Contexts.ClassContext.Entities;
 using CourseManagerApi.Core.Contexts.ClassContext.UseCases.AddClient.Contracts;
 using CourseManagerApi.Core.Contexts.ClientContext.Entities;
+using CourseManagerApi.Core.Contexts.PaymentContext.Entities;
 using CourseManagerApi.Core.Contexts.TenantContext.Entities;
 using CourseManagerApi.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,15 @@ public class Repository : IRepository
     public async Task SaveAsync(Contract contract, CancellationToken cancellationToken)
     {
         await _context.Contracts.AddAsync(contract, cancellationToken);
+    }
+    
+    public async Task SaveAsync(Payment payment, CancellationToken cancellationToken)
+    {
+        await _context.Payments.AddAsync(payment, cancellationToken);
+    }
+
+    public async Task SaveAsync(CancellationToken cancellationToken)
+    {
         await _context.SaveChangesAsync(cancellationToken);
     }
 }

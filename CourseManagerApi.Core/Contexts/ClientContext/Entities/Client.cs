@@ -38,7 +38,7 @@ public class Client : Entity
     public User Creator { get; private set; } = null!;
     public User Captivator { get; private set; } = null!;
     public Client? Indicator { get; private set; } = null!;
-    public Tenant Tenant { get; private set; } = null!;
+    public Tenant? Tenant { get; private set; } = null!;
     public List<Address> Addresses { get; } = new();
     public List<PhoneNumber> PhoneNumbers { get; } = new();
 

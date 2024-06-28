@@ -35,7 +35,8 @@ public class Handler : IRequestHandler<Request, Response>
                 {
                     Id = client.Id.ToString(),
                     Name = client.Name,
-                    Email = client.Email
+                    Email = client.Email,
+                    IsActive = client.IsActive
                 };
             });
 

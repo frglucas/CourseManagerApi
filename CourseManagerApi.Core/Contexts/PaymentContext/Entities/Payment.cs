@@ -23,10 +23,15 @@ public class Payment : Entity
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
     public Contract Contract { get; private set; } = null!;
-    public Tenant Tenant { get; private set; } = null!;
+    public Guid ContractId { get; private set; } = Guid.Empty;
+    public Tenant? Tenant { get; private set; } = null!;
     public List<Installment> Installments { get; private set; } = new();
 
-    public void SetContract(Contract contract) => Contract = contract;
+    public void SetContract(Contract contract)
+    {
+        Contract = contract;
+        ContractId = contract.Id;
+    }
 
     public void SetTenant(Tenant tenant) => Tenant = tenant;
 

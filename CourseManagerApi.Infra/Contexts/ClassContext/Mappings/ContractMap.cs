@@ -25,9 +25,7 @@ public class ContractMap : IEntityTypeConfiguration<Contract>
 
         builder.HasOne(x => x.Payment)
             .WithOne(x => x.Contract)
-            .HasForeignKey<Contract>("PaymentId")
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired(false);
+            .IsRequired(true);
 
         builder.Property(x => x.CreatedAt)
             .HasColumnName("CreatedAt")
@@ -40,7 +38,7 @@ public class ContractMap : IEntityTypeConfiguration<Contract>
         builder.HasOne(x => x.Tenant)
             .WithMany()
             .HasForeignKey(x => x.TenantId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired(true);
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
     }
 }

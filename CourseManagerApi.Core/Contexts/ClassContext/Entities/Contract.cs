@@ -18,10 +18,11 @@ public class Contract : Entity
 
     public Class Class { get; private set; } = null!;
     public Client Client { get; private set; } = null!;
-    public Payment? Payment { get; private set; } = null!;
+    public Payment Payment { get; private set; } = null!;
+    public Guid PaymentId { get; private set; } = Guid.Empty;
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
-    public Tenant Tenant { get; private set; } = null!;
+    public Tenant? Tenant { get; private set; } = null!;
 
     public void SetTenant(Tenant tenant)
     {
@@ -29,5 +30,9 @@ public class Contract : Entity
             Tenant = tenant;
     }
 
-    public void SetPayment(Payment payment) => Payment = payment;
+    public void SetPayment(Payment payment)
+    {
+        Payment = payment;
+        PaymentId = payment.Id;
+    }
 }

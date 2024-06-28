@@ -87,11 +87,15 @@ public class Handler : IRequestHandler<Request, Response>
         #region 04. Criar objetos
 
         Contract contract;
+        Payment payment;
 
         try
         {
             contract = new Contract(classObject, client);
             contract.SetTenant(tenant);
+
+            payment = new Payment(Decimal.Zero, (int)Decimal.Zero, EPaymentStatus.NotPaid);
+            payment.SetTenant(tenant);
         }
         catch
         {
@@ -105,6 +109,10 @@ public class Handler : IRequestHandler<Request, Response>
         try
         {
             await _repository.SaveAsync(contract, cancellationToken);
+            payment.SetContract(contract);
+            await _repository.SaveAsync(payment, cancellationToken);
+            contract.SetPayment(payment);
+            await _repository.SaveAsync(cancellationToken);
         }
         catch
         {

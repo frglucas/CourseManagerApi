@@ -79,13 +79,14 @@ public class Handler : IRequestHandler<Request, Response>
                 payment = new Payment(request.Money, 1, Enums.EPaymentStatus.NotPaid);  
                 payment.SetContract(contract);
                 payment.SetTenant(tenant);
+                contract.SetPayment(payment);
             } 
             else
             {
                 payment.SumTotalPrince(request.Money);
             } 
 
-            installment = new Installment(request.Money, request.DueDate);
+            installment = new Installment(request.Money, request.DueDate, request.PaymentMethod);
             installment.SetPayment(payment); 
             installment.SetTenant(tenant);
         }

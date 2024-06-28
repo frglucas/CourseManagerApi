@@ -46,6 +46,30 @@ public static class ClassContextExtensions
             CourseManagerApi.Infra.Contexts.ClassContext.UseCases.AddClient.Repository>();
 
         #endregion
+
+        #region GetAllContractsByClass
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.ClassContext.UseCases.GetAllContractsByClass.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClassContext.UseCases.GetAllContractsByClass.Repository>();
+
+        #endregion
+        
+        #region RemoveClient
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.ClassContext.UseCases.RemoveClient.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClassContext.UseCases.RemoveClient.Repository>();
+
+        #endregion
+
+        #region GetContractById
+
+        builder.Services.AddTransient<
+            CourseManagerApi.Core.Contexts.ClassContext.UseCases.GetContractById.Contracts.IRepository,
+            CourseManagerApi.Infra.Contexts.ClassContext.UseCases.GetContractById.Repository>();
+
+        #endregion
     }
 
     public static void MapClassEndpoints(this WebApplication app)
@@ -124,7 +148,7 @@ public static class ClassContextExtensions
 
         #region AddClient
 
-        app.MapPost("api/v1/classes/add-clients", async (
+        app.MapPost("api/v1/classes/add-client", async (
             CourseManagerApi.Core.Contexts.ClassContext.UseCases.AddClient.Request request,
             IRequestHandler<
                 CourseManagerApi.Core.Contexts.ClassContext.UseCases.AddClient.Request,
@@ -132,6 +156,61 @@ public static class ClassContextExtensions
         {
             var result = await handler.Handle(request, new CancellationToken());
             return Results.Json(result, statusCode: result.Status);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region GetAllContractsByClass
+
+        app.MapGet("api/v1/classes/contracts", async (
+            [FromQuery] string classId,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.GetAllContractsByClass.Request,
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.GetAllContractsByClass.Response> handler) =>
+        {
+            var result = await handler.Handle(new(classId), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region RemoveClient
+
+        app.MapDelete("api/v1/classes/remove-client", async (
+            [FromQuery] string classId,
+            [FromQuery] string contractId,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.RemoveClient.Request,
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.RemoveClient.Response> handler) => 
+        {
+            var result = await handler.Handle(new(classId, contractId), new CancellationToken());
+            return Results.Json(result, statusCode: result.Status);
+        }).RequireAuthorization();
+
+        #endregion
+
+        #region GetContractById
+
+        app.MapGet("api/v1/classes/contract", async (
+            [FromQuery] string id,
+            IRequestHandler<
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.GetContractById.Request,
+                CourseManagerApi.Core.Contexts.ClassContext.UseCases.GetContractById.Response> handler) =>
+        {
+            var result = await handler.Handle(new(id), new CancellationToken());
+            if (!result.IsSuccess)
+                return Results.Json(result, statusCode: result.Status);
+
+            if (result.Data is null)
+                return Results.Json(result, statusCode: 500);
+
+            return Results.Ok(result);
         }).RequireAuthorization();
 
         #endregion
